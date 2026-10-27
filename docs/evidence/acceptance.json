@@ -1,0 +1,106 @@
+{
+  "recorded_at": "2026-10-27",
+  "method": "Agent 在实际软件界面操作；调用记录通过监控与只读数据库核对",
+  "scenarios": 9,
+  "recorded_agent_runs": 11,
+  "agent_executions": {
+    "technical": 6,
+    "general": 2,
+    "billing": 7
+  },
+  "failed": 0,
+  "degraded": 0,
+  "automated_regression": 310,
+  "content_findings_open": [
+    "AR02退款先后顺序扩写",
+    "AR03错误码及规则边界扩写"
+  ],
+  "interpretation": "11次编排与15次Agent执行包含修复前及复验；不是11个独立场景，也不是Token或付费请求数。",
+  "current_rerun": {
+    "date": "2026-10-28",
+    "backend_tests": 310,
+    "backend_result": "passed",
+    "frontend_build": "passed",
+    "new_paid_model_calls": 0
+  },
+  "ui_cases": [
+    {
+      "id": "AR01",
+      "task": "401与崩溃，明确否定资金问题",
+      "expected": "仅技术支持",
+      "observed": "仅技术支持",
+      "routing": "通过",
+      "content": "未作为完整内容正确率样本"
+    },
+    {
+      "id": "AR02",
+      "task": "已发货退货退款",
+      "expected": "账单售后",
+      "observed": "账单售后",
+      "routing": "通过",
+      "content": "未通过：把退货先于退款扩写成退货后才能提交申请"
+    },
+    {
+      "id": "AR03",
+      "task": "重复扣款与401崩溃，资金依据不全",
+      "expected": "技术支持与账单售后，明确缺口",
+      "observed": "两个领域均执行",
+      "routing": "通过",
+      "content": "未通过：出现301及无依据的通常原路退回"
+    },
+    {
+      "id": "AR04",
+      "task": "登录恢复，资金仍待核实",
+      "expected": "不再派技术排查",
+      "observed": "曾多派技术；修复后仅账单",
+      "routing": "修复后通过",
+      "content": "未作为完整内容正确率样本"
+    },
+    {
+      "id": "AR05",
+      "task": "所有政策依据缺失",
+      "expected": "不调用回复Agent，列出缺口",
+      "observed": "未调用，分别列出缺口",
+      "routing": "通过",
+      "content": "不对缺失政策作承诺"
+    },
+    {
+      "id": "AR06",
+      "task": "税费缺口与401，无业务生效资料",
+      "expected": "分列知识缺口及待补技术信息",
+      "observed": "未调用回复Agent，补充核对项",
+      "routing": "修复后通过",
+      "content": "未推断故障原因"
+    },
+    {
+      "id": "AR07",
+      "task": "核对只读订单时效",
+      "expected": "直接查事实，无意图与回复模型",
+      "observed": "绕过意图识别，按订单计算",
+      "routing": "修复后通过",
+      "content": "仅支持对应日期字段计算"
+    },
+    {
+      "id": "AR08",
+      "task": "E401闪退，否定退款扣款",
+      "expected": "仅技术支持",
+      "observed": "仅技术支持",
+      "routing": "通过",
+      "content": "未作为完整内容正确率样本"
+    },
+    {
+      "id": "AR09",
+      "task": "普通配送与偏远地区说明",
+      "expected": "通用客服",
+      "observed": "通用客服",
+      "routing": "通过",
+      "content": "不代表任意配送问题都正确"
+    }
+  ],
+  "limits": [
+    "没有真实客服访谈或生产观察",
+    "单Agent失败、超时与部分失败主要用隔离受控测试验证",
+    "未做压力测试、外部渠道发送或真实资金操作",
+    "未将调用完成视为答案正确"
+  ]
+}

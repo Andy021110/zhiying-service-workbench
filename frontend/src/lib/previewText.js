@@ -1,0 +1,22 @@
+// Compact excerpts are plain text. Full messages keep their original Markdown.
+export function previewText(value) {
+  return String(value ?? '')
+    .replace(/\r\n?/g, '\n')
+    .replace(/^\s{0,3}(?:`{3,}|~{3,})[^\n]*$/gm, '')
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*(?:\)|$)/g, '$1')
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+    .replace(/^\s*>\s?/gm, '')
+    .replace(/^\s*(?:[-+*]|\d+[.)])\s+(?:\[[ xX]\]\s*)?/gm, '')
+    .replace(/^\s*(?:[-*_]\s*){3,}$/gm, '')
+    .replace(/^\s*\|?[\s:|-]*[-:][\s:|-]*\|\s*$/gm, '')
+    .replace(/\*\*|__/g, '')
+    .replace(/~~|`+/g, '')
+    .replace(/(^|\s)[*_]([^*_]+?)[*_](?=$|[\s，。！？、；：,.!?;:])/g, '$1$2')
+    .replace(/^\s*\|\s*|\s*\|\s*$/gm, '')
+    .replace(/\s+\|\s+/g, ' · ')
+    .replace(/\\([\\`*_{}\[\]()#+\-.!>~|])/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim()
+}

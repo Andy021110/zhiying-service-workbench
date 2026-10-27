@@ -1,0 +1,6 @@
+2026-10-28 · 本地工作副本 · Python unittest discover -s tests
+310 tests passed.
+
+前端 npm run build：通过。
+本次只复跑自动化测试和构建，未重新执行付费模型验收。
+历史实际界面验收：2026-10-27，9类场景，详情见 acceptance.json。

@@ -1,0 +1,26 @@
+# Credentials and local state
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.sqlite*
+*.db
+*.db-*
+/backend/data/
+logs/
+*.log
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+.idea/
+.vscode/
+node_modules/
+dist/
+playwright-report/
+test-results/
+
+.runtime/

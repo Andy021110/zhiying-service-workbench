@@ -1,0 +1,5468 @@
+{
+  "title": "知应 用户任务地图",
+  "version": "2026-10-27-v5-assistant-acceptance",
+  "stages": [
+    "开始当班",
+    "受理与核对",
+    "准备回复",
+    "分派与跟进",
+    "结案与重开",
+    "复盘与补齐"
+  ],
+  "principle": "角色与目标 → 活动 → 用户任务 → 需求故事 → 版本范围 → 验收与覆盖证据",
+  "scope": "这是基于本地试用的设计基线；本地可用不等于真实渠道发送、企业认证或生产可用。优先级为待验证建议。",
+  "tasks": [
+    {
+      "id": "T01",
+      "role": "agent",
+      "stage": 0,
+      "title": "找到今天该处理的事",
+      "trigger": "开始当班或处理完上一件事",
+      "steps": [
+        "打开今日待办",
+        "筛选分派给我、今日到期或逾期",
+        "进入关联工单"
+      ],
+      "done": "知道下一件事、负责人和截止时间",
+      "exception": "无负责人进入无人认领；无期限补齐下一步",
+      "view": "todo",
+      "availability": "local",
+      "inputs": [
+        "事项队列",
+        "到期时间",
+        "本班成员"
+      ],
+      "output": "本班处理顺序",
+      "depends_on": [],
+      "current_support": "今日待办筛选和优先级排序",
+      "gap": "服务承诺规则与自动升级尚需完善",
+      "scenario_ids": [],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "知道下一件事、负责人和截止时间",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A01",
+      "story_ids": [
+        "B01"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G02",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T02",
+      "role": "agent",
+      "stage": 1,
+      "title": "受理一条客户投诉",
+      "trigger": "客户反馈或人工录入问题",
+      "steps": [
+        "打开来源反馈",
+        "创建或打开已有事项",
+        "填写问题类型、涉及商品、诉求与凭证说明"
+      ],
+      "done": "原文、原时间、订单和诉求有对应记录",
+      "exception": "同一空间已有事项直接进入；未收录订单明确提示",
+      "view": "feedback",
+      "availability": "local",
+      "inputs": [
+        "客户原话",
+        "订单标识",
+        "期望结果"
+      ],
+      "output": "受理记录与原始来源",
+      "depends_on": [],
+      "current_support": "原评价受理去重与结构化诉求记录",
+      "gap": "人工重复事项和跨渠道合并未实现",
+      "scenario_ids": [
+        "S01",
+        "S02",
+        "S06",
+        "S12"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "本轮有限场景已实际试用；存在关联待修复问题 G01,G02,G04，不能据此认定所有异常都已通过",
+      "acceptance": [
+        "原文、原时间、订单和诉求有对应记录",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A02",
+      "story_ids": [
+        "B02",
+        "N16"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G03",
+      "known_issue_ids": [
+        "G01",
+        "G02",
+        "G04"
+      ],
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T03",
+      "role": "agent",
+      "stage": 1,
+      "title": "核对订单事实与时间线",
+      "trigger": "客户询问状态、时效或商品",
+      "steps": [
+        "查找并关联只读历史订单",
+        "查看商品/运费和订单事件",
+        "询问送达时间差"
+      ],
+      "done": "事实来自订单字段，并能核对原记录",
+      "exception": "事实不足请客户补充；赔付政策走已生效知识",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "关联订单",
+        "原评价时间"
+      ],
+      "output": "事实核对记录",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "历史订单字段、明细、时间线和日期比较",
+      "gap": "实时订单查询依赖后续业务接入",
+      "scenario_ids": [
+        "S01",
+        "S02",
+        "S12"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "本轮有限场景已实际试用；存在关联待修复问题 G04，不能据此认定所有异常都已通过",
+      "acceptance": [
+        "事实来自订单字段，并能核对原记录",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A02",
+      "story_ids": [
+        "B02",
+        "N16"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G04",
+      "known_issue_ids": [
+        "G04"
+      ],
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T04",
+      "role": "agent",
+      "stage": 1,
+      "title": "对照原文读懂客户真实评价",
+      "trigger": "收到外语评价",
+      "steps": [
+        "在客户反馈或会话原文旁展开中文译文",
+        "对照数量、否定、时间和截断并核对原文",
+        "下次直接读取已保存译文；失败时原位重试"
+      ],
+      "done": "原文不改写，译文可展开/收起、刷新恢复；不冒充客户原始中文评价",
+      "exception": "翻译服务失败可重试；不以翻译推断退款政策",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "客户原文",
+        "原始语言"
+      ],
+      "output": "带机器翻译标记、可对照原文的已保存中文译文",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "列表及会话原文旁直接查看中文译文；按原文版本保存，失败可重试；不追加客户回复",
+      "gap": "译文仍需人工核对；无人工翻译派单流程",
+      "scenario_ids": [
+        "S01",
+        "S06"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "得到标注为机器翻译的草稿；原文保留",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A02",
+      "story_ids": [
+        "B02",
+        "N10"
+      ],
+      "evidence_ids": [
+        "E09",
+        "E12"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G04",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T05",
+      "role": "agent",
+      "stage": 2,
+      "title": "形成有依据的回复",
+      "trigger": "已确认客户问题",
+      "steps": [
+        "选择业务或测试模式",
+        "生成草稿并核对依据",
+        "修改后采用本地回复"
+      ],
+      "done": "正文可追溯，采用人和修改记录保留",
+      "exception": "引用失效先重新生成；缺规则创建知识缺口",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "已核对事实",
+        "当前生效规则"
+      ],
+      "output": "可追溯的回复草稿",
+      "depends_on": [
+        "T03"
+      ],
+      "current_support": "知识模式、引用、人工修改及采用记录",
+      "gap": "无依据时需要分支处理；实际发送待接入",
+      "scenario_ids": [
+        "S01",
+        "S02",
+        "S04",
+        "S05",
+        "S11"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "正文可追溯，采用人和修改记录保留",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A03",
+      "story_ids": [
+        "B03",
+        "N11"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G05",
+      "acceptance_case_ids": [
+        "A01",
+        "A02",
+        "A03",
+        "A05",
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11",
+        "A13"
+      ]
+    },
+    {
+      "id": "T06",
+      "role": "agent",
+      "stage": 2,
+      "title": "中途切换后继续写",
+      "trigger": "需要同时处理多个事项",
+      "steps": [
+        "编辑草稿或内部备注",
+        "切换事项/刷新",
+        "恢复当前用户在本机的编辑内容"
+      ],
+      "done": "未提交的编辑可以继续，不覆盖别人已保存的新版",
+      "exception": "源回复已变化时提示并允许保留文本",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "当前编辑文本",
+        "服务端版本"
+      ],
+      "output": "可恢复的未提交内容",
+      "depends_on": [
+        "T05"
+      ],
+      "current_support": "浏览器暂存、切换恢复和冲突文字保留",
+      "gap": "暂存限当前浏览器；不是跨设备同步草稿",
+      "scenario_ids": [
+        "S05",
+        "S08",
+        "S11",
+        "S12"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "本轮有限场景已实际试用；存在关联待修复问题 G01，不能据此认定所有异常都已通过",
+      "acceptance": [
+        "未提交的编辑可以继续，不覆盖别人已保存的新版",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A03",
+      "story_ids": [
+        "B04",
+        "N15"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E04"
+      ],
+      "level": "支撑能力",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G05",
+      "known_issue_ids": [
+        "G01"
+      ],
+      "acceptance_case_ids": [
+        "A02"
+      ]
+    },
+    {
+      "id": "T07",
+      "role": "agent",
+      "stage": 2,
+      "title": "修订并交付准备好的回复",
+      "trigger": "采用后需调整或在外部渠道使用",
+      "steps": [
+        "从采用稿创建修订版",
+        "修改并采用新版",
+        "复制正文或导出本地文件"
+      ],
+      "done": "旧采用稿不被抹除，新稿有来源链；复制不声称已发送",
+      "exception": "复制失败可导出；实际消息发送属于待接入能力",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "采用稿",
+        "修订原因"
+      ],
+      "output": "保留来源链的新稿或正文文件",
+      "depends_on": [
+        "T05"
+      ],
+      "current_support": "采用稿独立修订、复制/TXT导出；指定已保存回复生成外语译稿并保留原稿快照，来源变化后阻止采用",
+      "gap": "没有真实渠道发送、失败重试或回执",
+      "scenario_ids": [
+        "S01"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "旧采用稿不被抹除，新稿有来源链；复制不声称已发送",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A03",
+      "story_ids": [
+        "B03",
+        "N11"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G06",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T08",
+      "role": "handoff",
+      "stage": 3,
+      "title": "接手同事交来的事项",
+      "trigger": "同事把工单分派给我",
+      "steps": [
+        "在共享空间进入分派给我",
+        "打开同一工单与会话",
+        "继续补充处理记录"
+      ],
+      "done": "双方查看同一事项和历史，无需再创建一单",
+      "exception": "非成员不可访问；负责人只能选空间成员",
+      "view": "todo",
+      "availability": "local",
+      "inputs": [
+        "共享工单",
+        "处理历史",
+        "下一步安排"
+      ],
+      "output": "接班同事继续处理的同一事项",
+      "depends_on": [
+        "T12",
+        "T13"
+      ],
+      "current_support": "交接预览材料与回访；逐项移交或保留，接班人接受后同步对应独立责任",
+      "gap": "分派后由F07确认接受或退回，接受前原责任人继续跟进",
+      "scenario_ids": [
+        "S03",
+        "S09"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "双方查看同一事项和历史，无需再创建一单",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A04",
+      "story_ids": [
+        "B05",
+        "N12"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G07",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T09",
+      "role": "agent",
+      "stage": 3,
+      "title": "安排回访或等待内部结果",
+      "trigger": "暂时不能结案",
+      "steps": [
+        "选择等待原因和优先级",
+        "指定负责人、截止时间与下一步",
+        "保存并在到期待办核对"
+      ],
+      "done": "承诺形成结构化待办，可延期且保留理由",
+      "exception": "未指定负责人或下一步时不能安排到期任务",
+      "view": "tickets",
+      "availability": "local",
+      "inputs": [
+        "等待原因",
+        "负责成员",
+        "下一步"
+      ],
+      "output": "有期限的跟进安排",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "优先级、截止时间、等待原因与本地到期待办",
+      "gap": "未连接外部提醒与承诺规则",
+      "scenario_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S08"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "承诺形成结构化待办，可延期且保留理由",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A04",
+      "story_ids": [
+        "B05",
+        "N12"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G07",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T10",
+      "role": "agent",
+      "stage": 4,
+      "title": "有依据地完成事项",
+      "trigger": "关联工作已完成",
+      "steps": [
+        "记录解决结果",
+        "完成关联工单",
+        "确认事项同步为已解决"
+      ],
+      "done": "有结果、有完成时间，未完成工作不会被静默关闭",
+      "exception": "仍有待跟进工单时阻止直接结案",
+      "view": "tickets",
+      "availability": "local",
+      "inputs": [
+        "核实的结果",
+        "关联工单状态"
+      ],
+      "output": "本地结案结果与时间",
+      "depends_on": [
+        "T09"
+      ],
+      "current_support": "阻止跳过未完成工单；结果与会话同步",
+      "gap": "已实现内部结案安排；重开后仍可复用旧客户确认（G03），需按本轮处理周期重新判断",
+      "scenario_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S07",
+        "S10"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "本轮有限场景已实际试用；存在关联待修复问题 G03，不能据此认定所有异常都已通过",
+      "acceptance": [
+        "有结果、有完成时间，未完成工作不会被静默关闭",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A05",
+      "story_ids": [
+        "B06",
+        "N13"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G09",
+      "known_issue_ids": [
+        "G03"
+      ],
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T11",
+      "role": "handoff",
+      "stage": 4,
+      "title": "客户再次提出问题时重开",
+      "trigger": "已结案事项需要继续处理",
+      "steps": [
+        "打开原工单",
+        "填写重开原因",
+        "重新设定下一步与期限"
+      ],
+      "done": "原事项恢复处理中，历史保留且重开次数可追踪",
+      "exception": "未结案工单使用普通跟进入口",
+      "view": "tickets",
+      "availability": "local",
+      "inputs": [
+        "原工单",
+        "再次联系或补充材料"
+      ],
+      "output": "有原因的原事项重开",
+      "depends_on": [
+        "T10"
+      ],
+      "current_support": "重开原因、历史和次数保留",
+      "gap": "重开历史和次数可查；旧客户确认尚未失效（G03），当前不能保证本轮重新确认",
+      "scenario_ids": [
+        "S03",
+        "S05",
+        "S10"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "本轮有限场景已实际试用；存在关联待修复问题 G03，不能据此认定所有异常都已通过",
+      "acceptance": [
+        "原事项恢复处理中，历史保留且重开次数可追踪",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A05",
+      "story_ids": [
+        "B06",
+        "N13"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G10",
+      "known_issue_ids": [
+        "G03"
+      ],
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T12",
+      "role": "supervisor",
+      "stage": 0,
+      "title": "建立可交接的本地团队",
+      "trigger": "多人协作前",
+      "steps": [
+        "创建协作空间",
+        "维护成员与本地角色",
+        "进入团队共享范围"
+      ],
+      "done": "成员能共享本空间事项，个人历史继续保留",
+      "exception": "本地身份切换不代替企业登录；知识库仍在本机共享",
+      "view": "team",
+      "availability": "local",
+      "inputs": [
+        "协作范围",
+        "成员标识"
+      ],
+      "output": "显式共享空间与成员",
+      "depends_on": [],
+      "current_support": "本机空间与成员维护；个人历史保留",
+      "gap": "本地标识不是企业认证，详见F12",
+      "scenario_ids": [],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "成员能共享本空间事项，个人历史继续保留",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A01",
+      "story_ids": [
+        "B01"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G01",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T13",
+      "role": "supervisor",
+      "stage": 3,
+      "title": "分配人手并发现漏单",
+      "trigger": "需要调整分工",
+      "steps": [
+        "筛选无人认领或逾期",
+        "把工单分派给成员",
+        "明确跟进动作"
+      ],
+      "done": "有负责人且能在对方待办中找到",
+      "exception": "跨空间成员不能被误分派",
+      "view": "todo",
+      "availability": "local",
+      "inputs": [
+        "无人认领或逾期事项",
+        "可分配成员"
+      ],
+      "output": "明确负责人及行动",
+      "depends_on": [
+        "T01",
+        "T12"
+      ],
+      "current_support": "成员限定分派、负责人筛选与处理记录",
+      "gap": "接手确认已支持；按技能/负载自动分配尚未实现",
+      "scenario_ids": [
+        "S03"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "有负责人且能在对方待办中找到",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A04",
+      "story_ids": [
+        "B05"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G07",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T14",
+      "role": "supervisor",
+      "stage": 5,
+      "title": "查看业务处理结果",
+      "trigger": "当班复盘",
+      "steps": [
+        "查看待处理、回访、逾期和重开",
+        "按负责人查看积压",
+        "进入原事项核对"
+      ],
+      "done": "统计可以解释，采用草稿不算问题解决",
+      "exception": "无客户确认/满意度数据时不显示虚假解决率",
+      "view": "report",
+      "availability": "local",
+      "inputs": [
+        "本地事项与工单结果",
+        "负责人"
+      ],
+      "output": "可解释的本地累计服务概况",
+      "depends_on": [
+        "T10"
+      ],
+      "current_support": "未结、到期、逾期、重开等统计与记录回查",
+      "gap": "缺少周期与时长分析；不推断客户满意",
+      "scenario_ids": [],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "统计可以解释，采用草稿不算问题解决",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A06",
+      "story_ids": [
+        "B08"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G12",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T15",
+      "role": "agent",
+      "stage": 5,
+      "title": "将缺少规则的问题交给维护人员",
+      "trigger": "业务模式未命中有效政策",
+      "steps": [
+        "从当前会话建立知识缺口",
+        "保留原问题与关联事项",
+        "分派给维护人员"
+      ],
+      "done": "缺口有负责人和记录，客户事项可继续跟进",
+      "exception": "订单事实和翻译不用靠政策文档解锁",
+      "view": "knowledge",
+      "availability": "local",
+      "inputs": [
+        "缺少规则的原问题",
+        "关联事项"
+      ],
+      "output": "有负责人和来源的知识缺口",
+      "depends_on": [
+        "T05"
+      ],
+      "current_support": "登记、分派与处理说明",
+      "gap": "缺口原题更正、撤销恢复、同范围合并已有；可靠业务规则和正式审核责任仍需业务确认",
+      "scenario_ids": [
+        "S04",
+        "S13"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "缺口有负责人和记录，客户事项可继续跟进",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A06",
+      "story_ids": [
+        "B07",
+        "N17"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G11",
+      "acceptance_case_ids": [
+        "A04",
+        "A11"
+      ]
+    },
+    {
+      "id": "T16",
+      "role": "knowledge",
+      "stage": 5,
+      "title": "补齐并审核业务知识",
+      "trigger": "收到待处理知识缺口",
+      "steps": [
+        "查看原问题",
+        "维护文档并走提交/审核流程",
+        "用生效业务文档完成缺口"
+      ],
+      "done": "缺口关联到实际生效文档，原事项可核对",
+      "exception": "测试资料或待审草稿不能标成补齐的正式业务依据",
+      "view": "knowledge",
+      "availability": "local",
+      "inputs": [
+        "待补规则",
+        "可靠业务资料"
+      ],
+      "output": "关联到已生效文档的缺口",
+      "depends_on": [
+        "T15"
+      ],
+      "current_support": "提交/审核后生效；缺口完成校验生效文档",
+      "gap": "需真实业务审核责任人核实内容",
+      "scenario_ids": [
+        "S04",
+        "S13"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "缺口关联到实际生效文档，原事项可核对",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A06",
+      "story_ids": [
+        "B07"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G11",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "T17",
+      "role": "knowledge",
+      "stage": 5,
+      "title": "维护版本和撤下失效规则",
+      "trigger": "规则更新或需要下线",
+      "steps": [
+        "保存新草稿",
+        "审核后切换生效版本",
+        "必要时归档或恢复后重审"
+      ],
+      "done": "旧版本可核对，失效规则不再用于新答复",
+      "exception": "待审新版不覆盖当前生效版",
+      "view": "knowledge",
+      "availability": "local",
+      "inputs": [
+        "规则更新资料",
+        "现行版本"
+      ],
+      "output": "可追溯的生效版本或归档记录",
+      "depends_on": [
+        "T16"
+      ],
+      "current_support": "草稿/生效版并存；归档和恢复需重审",
+      "gap": "明确关联事项的逐项回查已支持；本轮未重新发布文档，仍不推断所有语义相关事项",
+      "scenario_ids": [
+        "S04"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "旧版本可核对，失效规则不再用于新答复",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A06",
+      "story_ids": [
+        "B07"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G11",
+      "acceptance_case_ids": [
+        "A03",
+        "A12"
+      ]
+    },
+    {
+      "id": "F01",
+      "role": "agent",
+      "stage": 2,
+      "title": "通过真实渠道发送并取得回执",
+      "trigger": "准备向客户正式发送",
+      "steps": [
+        "接入实际客服渠道",
+        "确认收件人与权限",
+        "记录发送结果"
+      ],
+      "done": "获得真实渠道回执；失败可重试",
+      "exception": "当前仅支持复制/导出，不假称已发送",
+      "view": "desk",
+      "availability": "external",
+      "inputs": [
+        "采用稿",
+        "收件人",
+        "渠道权限"
+      ],
+      "output": "真实发送结果与回执",
+      "depends_on": [
+        "T07"
+      ],
+      "current_support": "仅支持复制与导出",
+      "gap": "发送、重试、回执与送达状态待接入",
+      "scenario_ids": [
+        "S01"
+      ],
+      "source": "基于当前能力的业务推演；待真实业务人员确认",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "先访谈/观察业务场景，再补流程与验收样例",
+      "acceptance": [
+        "获得真实渠道回执；失败可重试",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "P1",
+      "impact": "对客交付闭环",
+      "priority_reason": "只能复制导出，无法从产品确认真正发送成功",
+      "validation": "核实主要客服渠道、消息量及现有发送工具",
+      "priority_status": "建议，待业务验证",
+      "activity_id": "A03",
+      "story_ids": [
+        "P01"
+      ],
+      "evidence_ids": [
+        "E03",
+        "E05"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G06",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F02",
+      "role": "agent",
+      "stage": 3,
+      "title": "执行真实退款、补发或外部通知",
+      "trigger": "需要操作实际订单平台",
+      "steps": [
+        "连接业务平台",
+        "校验执行权限",
+        "操作并核对结果"
+      ],
+      "done": "有真实平台结果与审计",
+      "exception": "当前只读历史订单与本地记录，不执行真实操作",
+      "view": "tickets",
+      "availability": "external",
+      "inputs": [
+        "已核实诉求",
+        "适用政策",
+        "平台权限"
+      ],
+      "output": "真实平台操作结果",
+      "depends_on": [
+        "T03",
+        "T05"
+      ],
+      "current_support": "历史订单只读，可保存处理意见",
+      "gap": "退款、补发、平台失败处理和实际结果待接入",
+      "scenario_ids": [
+        "S02"
+      ],
+      "source": "基于当前能力的业务推演；待真实业务人员确认",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "先访谈/观察业务场景，再补流程与验收样例",
+      "acceptance": [
+        "有真实平台结果与审计",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "P1",
+      "impact": "业务执行闭环",
+      "priority_reason": "处理意见尚未产生真实订单结果",
+      "validation": "先确认本产品是否承担退款/补发执行，以及可用平台接口",
+      "priority_status": "建议，待业务验证",
+      "activity_id": "A04",
+      "story_ids": [
+        "P02"
+      ],
+      "evidence_ids": [
+        "E03",
+        "E05"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G08",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F03",
+      "role": "agent",
+      "stage": 1,
+      "title": "上传并核对客户照片凭证",
+      "trigger": "缺件或质量问题需要图片",
+      "steps": [
+        "建立材料项并选择所属事项",
+        "上传原始凭证并记录人工来源",
+        "授权成员查看/下载并核验，必要时带原因归档"
+      ],
+      "done": "凭证可由授权成员核对",
+      "exception": "类型/大小/权限不符合时不保存假凭证；新凭证或归档后需重新核验；原文件仍在本机保留",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "客户照片",
+        "所属事项",
+        "来源时间"
+      ],
+      "output": "可由授权人员核对的凭证",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "按事项权限上传、预览/下载PNG/JPEG/WebP/PDF原文件；幂等重试、来源、归档原因与历史",
+      "gap": "单文件5MB、每事项20个活动凭证；归档保留原文件，自动清理与业务保留期尚未配置",
+      "scenario_ids": [
+        "S02",
+        "S07"
+      ],
+      "source": "首批功能本地流程、接口与浏览器验收；待真实业务人员观察",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "本轮有限场景已实际试用；存在关联待修复问题 G02，不能据此认定所有异常都已通过",
+      "acceptance": [
+        "凭证可由授权成员核对",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "证据收集",
+      "priority_reason": "本轮已补齐本地能力，保留回归检查",
+      "validation": "业务退出、材料与知识责任规则仍需实际业务确认",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A02",
+      "story_ids": [
+        "N03",
+        "N14"
+      ],
+      "evidence_ids": [
+        "E06",
+        "E07",
+        "E08"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G04",
+      "known_issue_ids": [
+        "G02"
+      ],
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F04",
+      "role": "agent",
+      "stage": 1,
+      "title": "找到同一客户的历史事项",
+      "trigger": "客户多次联系或涉及多个订单",
+      "steps": [
+        "核对客户身份与可用标识",
+        "查看关联历史事项",
+        "确认本次问题与既往处理关系"
+      ],
+      "done": "能区分新问题、原问题续办和重复联系，避免要求客户反复说明",
+      "exception": "身份不明确时不合并不同客户记录",
+      "view": "desk",
+      "availability": "planned",
+      "inputs": [
+        "客户可靠标识",
+        "既往联系与事项"
+      ],
+      "output": "本次问题与历史的关联",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "可查看单个事项与订单中的匿名客户标识",
+      "gap": "没有按客户查看多事项历史与确认关联的入口",
+      "scenario_ids": [
+        "S05"
+      ],
+      "source": "基于当前能力的业务推演；待真实业务人员确认",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "先访谈/观察业务场景，再补流程与验收样例",
+      "acceptance": [
+        "能区分新问题、原问题续办和重复联系，避免要求客户反复说明",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "P2",
+      "impact": "减少重复核对",
+      "priority_reason": "多次联系时可能重复询问客户",
+      "validation": "验证可靠客户标识与多次联系频率",
+      "priority_status": "建议，待业务验证",
+      "activity_id": "A02",
+      "story_ids": [
+        "N07"
+      ],
+      "evidence_ids": [
+        "E03",
+        "E05"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G03",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F05",
+      "role": "agent",
+      "stage": 4,
+      "title": "登记客户确认、异议或无法联系的结果",
+      "trigger": "已完成内部处理，准备结束对客服务",
+      "steps": [
+        "选择人工记录的客户结果",
+        "填写反馈时间、来源与说明",
+        "按业务退出规则安排结案或继续跟进"
+      ],
+      "done": "结果类别、来源、反馈时间及更正历史可查；待跟进事项有负责人和下一步",
+      "exception": "真实发送回执另属F01；人工登记不生成已读、已送达或满意度结论",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "客服核实的客户反馈",
+        "反馈发生时间",
+        "人工登记来源与说明"
+      ],
+      "output": "可区分客户结果与内部结案的记录",
+      "depends_on": [
+        "T09"
+      ],
+      "current_support": "实际客户反馈、发生时间、更正历史与结案计划分别保存；未确认结案必须明确后续跟进或无需回访原因",
+      "gap": "企业退出规则仍需业务定义；无真实渠道回执；无法联系不算客户确认解决",
+      "scenario_ids": [
+        "S01",
+        "S02",
+        "S08",
+        "S09",
+        "S10"
+      ],
+      "source": "首批功能本地流程、接口与浏览器验收；待真实业务人员观察",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "本轮有限场景已实际试用；存在关联待修复问题 G03，不能据此认定所有异常都已通过",
+      "acceptance": [
+        "客户结果独立于内部结案，包含来源、反馈时间及录入人",
+        "更正保留历史；待跟进结果明确负责人和下一步"
+      ],
+      "priority": "baseline",
+      "impact": "结果口径",
+      "priority_reason": "本轮已补齐本地能力，保留回归检查",
+      "validation": "业务退出、材料与知识责任规则仍需实际业务确认",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A05",
+      "story_ids": [
+        "N01",
+        "N13"
+      ],
+      "evidence_ids": [
+        "E06",
+        "E07",
+        "E08"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G09",
+      "known_issue_ids": [
+        "G03"
+      ],
+      "acceptance_case_ids": [
+        "A09",
+        "A10"
+      ]
+    },
+    {
+      "id": "F06",
+      "role": "agent",
+      "stage": 2,
+      "title": "生成失败后继续准备回复",
+      "trigger": "生成超时、服务不可用或网络中断",
+      "steps": [
+        "确认已保存的客户原话",
+        "重试同一次生成或改为人工回复",
+        "保留失败原因与后续结果"
+      ],
+      "done": "客户原话不丢失；重试不会误造重复问题；仍可人工推进",
+      "exception": "请求未确认时保留输入；生成失败可重试同次请求，或保留原话停止重试并手写回复",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "已保存的原话",
+        "失败记录"
+      ],
+      "output": "不丢原话的重试或人工答复",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "输入保留、持久化请求状态、同次重试、响应恢复、从零手写与采用/导出",
+      "gap": "恢复输入限当前浏览器；未接真实发送回执或跨设备未提交草稿",
+      "scenario_ids": [
+        "S05",
+        "S11"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "客户原话不丢失；重试不会误造重复问题；仍可人工推进",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A03",
+      "story_ids": [
+        "B03",
+        "N15"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E04"
+      ],
+      "level": "支撑能力",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G05",
+      "acceptance_case_ids": [
+        "A13"
+      ]
+    },
+    {
+      "id": "F07",
+      "role": "handoff",
+      "stage": 3,
+      "title": "确认接手或退回交接",
+      "trigger": "工单分派给同事之后",
+      "steps": [
+        "核对工单、材料、客户回访的当前责任与拟移交责任",
+        "材料或回访有新变化时退回重新核对",
+        "候选人接受后按清单转移责任，保留项不转移"
+      ],
+      "done": "能区分已分派、已接受和无法接手，交接有确认",
+      "exception": "接受前原人负责；清单版本变动拒绝接受，仍可退回；自动升级/通知见F11",
+      "view": "tickets",
+      "availability": "local",
+      "inputs": [
+        "已分派工单",
+        "交接摘要",
+        "下一步与期限"
+      ],
+      "output": "接手或退回的确认",
+      "depends_on": [
+        "T08"
+      ],
+      "current_support": "待接手队列、接受/退回及原因、责任人切换、历史与版本检查",
+      "gap": "自动超时升级和外部提醒尚未实现，见F11",
+      "scenario_ids": [
+        "S03",
+        "S09"
+      ],
+      "source": "本地试用与自动化验收",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "以任务完成标准进行本地验收；不证明真实客户问题已解决",
+      "acceptance": [
+        "能区分已分派、已接受和无法接手，交接有确认",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "当前本地流程基线",
+      "priority_reason": "已具备本地能力，保留回归检查",
+      "validation": "观察实际业务使用后再判断改进优先级",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A04",
+      "story_ids": [
+        "B05",
+        "N12"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E04"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G07",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F08",
+      "role": "supervisor",
+      "stage": 1,
+      "title": "处理重复或误建的事项",
+      "trigger": "发现多渠道重复、误建或无需继续的事项",
+      "steps": [
+        "核对是否属于同一问题",
+        "选择保留、合并或作废并说明理由",
+        "保留原来源与处理关联"
+      ],
+      "done": "重复数量与真正未处理事项可区分，记录可追溯",
+      "exception": "当前只对同一评价受理去重；人工事项与跨来源没有合并/作废入口",
+      "view": "tickets",
+      "availability": "planned",
+      "inputs": [
+        "疑似重复事项",
+        "各自原来源"
+      ],
+      "output": "保留关联的合并或作废记录",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "同一空间受理同一评价会去重",
+      "gap": "人工与跨来源重复无法合并、作废或撤销受理",
+      "scenario_ids": [
+        "S05"
+      ],
+      "source": "基于当前能力的业务推演；待真实业务人员确认",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "先访谈/观察业务场景，再补流程与验收样例",
+      "acceptance": [
+        "重复数量与真正未处理事项可区分，记录可追溯",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "P2",
+      "impact": "队列准确性",
+      "priority_reason": "误建或重复事项可能占据待办",
+      "validation": "核实跨来源重复比例和合并后的记录保留方式",
+      "priority_status": "建议，待业务验证",
+      "activity_id": "A02",
+      "story_ids": [
+        "N06"
+      ],
+      "evidence_ids": [
+        "E01",
+        "E03",
+        "E05"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G03",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F09",
+      "role": "agent",
+      "stage": 1,
+      "title": "追补缺少的材料",
+      "trigger": "事实不足以判断或客户需补充证据",
+      "steps": [
+        "建立材料清单并安排负责人和期限",
+        "区分待收集、已收到和已核验",
+        "必要材料先核验或带原因豁免；撤回保留历史"
+      ],
+      "done": "知道缺什么、谁来补、何时核对，原事项可以继续",
+      "exception": "当前可记材料说明和跟进安排；材料清单、收集状态及附件链路未齐",
+      "view": "desk",
+      "availability": "local",
+      "inputs": [
+        "缺少的事实或材料",
+        "客户联系约定"
+      ],
+      "output": "材料清单及收集核对状态",
+      "depends_on": [
+        "T02"
+      ],
+      "current_support": "逐项材料名称、必要性、负责人、期限、收到/核验/豁免/撤回状态及历史；结案检查必要材料",
+      "gap": "必要材料模板与豁免权限仍需业务核实；不自动判断材料真实性",
+      "scenario_ids": [
+        "S02",
+        "S07",
+        "S09"
+      ],
+      "source": "首批功能本地流程、接口与浏览器验收；待真实业务人员观察",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "核对对应需求故事的验收条件与首批验收证据；不证明真实客户问题解决",
+      "acceptance": [
+        "知道缺什么、谁来补、何时核对，原事项可以继续",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "事实完整性",
+      "priority_reason": "本轮已补齐本地能力，保留回归检查",
+      "validation": "业务退出、材料与知识责任规则仍需实际业务确认",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A02",
+      "story_ids": [
+        "N02",
+        "N14"
+      ],
+      "evidence_ids": [
+        "E06",
+        "E07",
+        "E08"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G04",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F10",
+      "role": "knowledge",
+      "stage": 5,
+      "title": "合并或撤销误登记的知识缺口",
+      "trigger": "重复缺口、已知订单事实被误登记或需求已取消",
+      "steps": [
+        "核对原问题和全部来源事项",
+        "填写更正、撤销或合并原因",
+        "保存版本；合并后从原记录打开目标继续维护"
+      ],
+      "done": "有效待补知识与误登记分开，不以无关文档强行完成",
+      "exception": "合并目标需同范围且有效；拒绝自身、循环、过期版本与跨空间操作；不自动结案",
+      "view": "knowledge",
+      "availability": "local",
+      "inputs": [
+        "待补知识记录",
+        "重复或误登记依据"
+      ],
+      "output": "有原因的撤销或合并记录",
+      "depends_on": [
+        "T15"
+      ],
+      "current_support": "更正原题、带原因撤销/恢复、同范围合并与转向；保留来源事项、原文和版本检查",
+      "gap": "本地空间成员权限规则；正式企业治理仍依赖F12；合并后从目标继续维护",
+      "scenario_ids": [
+        "S04",
+        "S13"
+      ],
+      "source": "首批功能本地流程、接口与浏览器验收；待真实业务人员观察",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "核对对应需求故事的验收条件与首批验收证据；不证明真实客户问题解决",
+      "acceptance": [
+        "有效待补知识与误登记分开，不以无关文档强行完成",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "知识队列准确性",
+      "priority_reason": "本轮已补齐本地能力，保留回归检查",
+      "validation": "业务退出、材料与知识责任规则仍需实际业务确认",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A06",
+      "story_ids": [
+        "N05",
+        "N17"
+      ],
+      "evidence_ids": [
+        "E06",
+        "E07",
+        "E08"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G11",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F11",
+      "role": "supervisor",
+      "stage": 3,
+      "title": "按服务承诺判断超时与升级",
+      "trigger": "高影响问题或承诺即将到期",
+      "steps": [
+        "确认适用的服务承诺与工作时段",
+        "确定优先级与截止时间",
+        "逾期或无人接手时升级"
+      ],
+      "done": "优先级和超时口径有依据，工作时段与升级路径明确",
+      "exception": "当前优先级和期限靠人工填写；无承诺规则、工作日计算和自动升级",
+      "view": "todo",
+      "availability": "partial",
+      "inputs": [
+        "适用承诺",
+        "工作时段",
+        "例外规则"
+      ],
+      "output": "可解释的截止时间与升级安排",
+      "depends_on": [
+        "T09",
+        "T13"
+      ],
+      "current_support": "可人工填写优先级和截止时间，查看本地逾期",
+      "gap": "承诺模板、工作时段计算与自动升级未实现",
+      "scenario_ids": [
+        "S03"
+      ],
+      "source": "基于当前能力的业务推演；待真实业务人员确认",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "先访谈/观察业务场景，再补流程与验收样例",
+      "acceptance": [
+        "优先级和超时口径有依据，工作时段与升级路径明确",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "P2",
+      "impact": "承诺一致性",
+      "priority_reason": "手工期限尚无统一承诺与升级口径",
+      "validation": "先取得业务承诺、工作时段和例外规则",
+      "priority_status": "建议，待业务验证",
+      "activity_id": "A04",
+      "story_ids": [
+        "N08"
+      ],
+      "evidence_ids": [
+        "E02",
+        "E03",
+        "E05"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G08",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F12",
+      "role": "supervisor",
+      "stage": 0,
+      "title": "让员工按授权进入工作范围",
+      "trigger": "准备正式多人使用",
+      "steps": [
+        "通过真实身份登录",
+        "按角色和所属组织授权",
+        "离职/调岗时撤回访问并留痕"
+      ],
+      "done": "真实身份、组织范围及可执行动作有对应授权",
+      "exception": "当前是本机成员标识演示，知识仍共享；未实现企业认证与权限治理",
+      "view": "team",
+      "availability": "external",
+      "inputs": [
+        "组织成员",
+        "真实身份系统",
+        "权限规则"
+      ],
+      "output": "可信身份与授权范围",
+      "depends_on": [],
+      "current_support": "本机标识和显式空间成员；不是企业身份认证",
+      "gap": "缺少企业登录、组织权限、知识隔离及成员退出治理",
+      "scenario_ids": [],
+      "source": "基于当前能力的业务推演；待真实业务人员确认",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "先访谈/观察业务场景，再补流程与验收样例",
+      "acceptance": [
+        "真实身份、组织范围及可执行动作有对应授权",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "P1",
+      "impact": "正式多人使用前置",
+      "priority_reason": "本地标识无法承担正式企业身份与授权",
+      "validation": "确认部署组织、身份系统和各角色允许的动作",
+      "priority_status": "建议，待业务验证",
+      "activity_id": "A01",
+      "story_ids": [
+        "P03"
+      ],
+      "evidence_ids": [
+        "E03",
+        "E05"
+      ],
+      "level": "支撑能力",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G01",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F13",
+      "role": "supervisor",
+      "stage": 5,
+      "title": "按周期分析处理效率与原因",
+      "trigger": "需要周度复盘或比较问题变化",
+      "steps": [
+        "选择时间范围与统计口径",
+        "查看积压、处理时长和重开原因",
+        "核对样本并决定改进动作"
+      ],
+      "done": "统计有时间边界和定义，能定位下一步改进",
+      "exception": "当前服务概况是累计本地记录；未实现周期筛选、处理时长和原因趋势",
+      "view": "report",
+      "availability": "partial",
+      "inputs": [
+        "可信时间记录",
+        "指标定义",
+        "复盘问题"
+      ],
+      "output": "周期内可核对的分析与改进依据",
+      "depends_on": [
+        "T14"
+      ],
+      "current_support": "累计本地事项结果、负责人积压和重开数量可回查",
+      "gap": "缺周期选择、处理时长与原因趋势；尚无生产样本",
+      "scenario_ids": [],
+      "source": "基于当前能力的业务推演；待真实业务人员确认",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "先访谈/观察业务场景，再补流程与验收样例",
+      "acceptance": [
+        "统计有时间边界和定义，能定位下一步改进",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "P3",
+      "impact": "周期复盘",
+      "priority_reason": "累计数字不足以比较不同周期效率",
+      "validation": "先明确主管真正使用的周期与指标定义",
+      "priority_status": "建议，待业务验证",
+      "activity_id": "A06",
+      "story_ids": [
+        "N09"
+      ],
+      "evidence_ids": [
+        "E02",
+        "E03",
+        "E05"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G12",
+      "acceptance_case_ids": []
+    },
+    {
+      "id": "F14",
+      "role": "knowledge",
+      "stage": 5,
+      "title": "知识生效后回到受影响的事项",
+      "trigger": "缺口对应的业务知识审核生效",
+      "steps": [
+        "从影响事项清单或原事项找到待回查项",
+        "核对当前生效依据与原事项",
+        "登记已回查、不适用或继续待回查及说明"
+      ],
+      "done": "知识更新推进了原问题，事项不会因为维护文档而被遗忘",
+      "exception": "当前可从缺口打开原事项；没有影响事项清单、回访提示和逐项确认",
+      "view": "knowledge",
+      "availability": "local",
+      "inputs": [
+        "生效知识版本",
+        "关联缺口和事项"
+      ],
+      "output": "已重新核对的受影响事项",
+      "depends_on": [
+        "T16",
+        "T17"
+      ],
+      "current_support": "从明确关联的缺口和业务引用生成版本回查项；逐项结论、说明、处理人、版本和历史；待办入口",
+      "gap": "仅覆盖明确关联，不推断所有语义相关事项；不会自动重开、改写采用稿或发送外部提醒",
+      "scenario_ids": [
+        "S04"
+      ],
+      "source": "首批功能本地流程、接口与浏览器验收；待真实业务人员观察",
+      "frequency": "尚无真实业务使用频率样本",
+      "verification": "核对对应需求故事的验收条件与首批验收证据；不证明真实客户问题解决",
+      "acceptance": [
+        "知识更新推进了原问题，事项不会因为维护文档而被遗忘",
+        "异常发生时保留原记录，并能说明下一步由谁处理"
+      ],
+      "priority": "baseline",
+      "impact": "知识回到业务",
+      "priority_reason": "本轮已补齐本地能力，保留回归检查",
+      "validation": "业务退出、材料与知识责任规则仍需实际业务确认",
+      "priority_status": "本地已验收，不代表生产可用",
+      "activity_id": "A06",
+      "story_ids": [
+        "N04"
+      ],
+      "evidence_ids": [
+        "E06",
+        "E07",
+        "E08"
+      ],
+      "level": "用户任务",
+      "research_state": "待真实业务观察验证",
+      "group_id": "G11",
+      "acceptance_case_ids": []
+    }
+  ],
+  "roles": [
+    {
+      "id": "agent",
+      "name": "当班客服",
+      "goal": "在承诺时间内，把客户问题推进到明确的下一步或处理结果。",
+      "deliverable": "清楚事实、答复依据和待跟进承诺"
+    },
+    {
+      "id": "handoff",
+      "name": "接班同事",
+      "goal": "接手原事项后，能够沿用已有核对结果继续处理。",
+      "deliverable": "同一事项、完整上下文、明确下一步"
+    },
+    {
+      "id": "supervisor",
+      "name": "主管",
+      "goal": "及时发现漏单和积压，把事项分给能够接手的人。",
+      "deliverable": "可解释的分工、期限与处理结果"
+    },
+    {
+      "id": "knowledge",
+      "name": "知识维护人员",
+      "goal": "让重复出现、缺少规则的问题得到可靠的业务依据。",
+      "deliverable": "可追溯来源、审核版本与回到原事项的路径"
+    }
+  ],
+  "stage_details": [
+    {
+      "id": 0,
+      "name": "开始当班",
+      "goal": "知道今天先处理什么",
+      "inputs": [
+        "待办、到期承诺、成员安排"
+      ],
+      "output": "明确本班优先事项与负责人",
+      "exception": "无人认领或已逾期 → 分派与升级",
+      "task_ids": [
+        "T01",
+        "T12",
+        "F12"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "受理与核对",
+      "goal": "弄清发生了什么、客户希望什么",
+      "inputs": [
+        "客户原话、订单、材料"
+      ],
+      "output": "可核对的事实与客户诉求",
+      "exception": "信息不足 → 追补材料；外语 → 翻译核对",
+      "task_ids": [
+        "T02",
+        "T03",
+        "T04",
+        "F03",
+        "F04",
+        "F08",
+        "F09"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "准备回复",
+      "goal": "准备可交付、有依据的答复",
+      "inputs": [
+        "已核对事实、生效规则"
+      ],
+      "output": "人工核对后的答复及使用依据",
+      "exception": "规则缺失 → 知识缺口；引用失效 → 重新核对",
+      "task_ids": [
+        "T05",
+        "T06",
+        "T07",
+        "F01",
+        "F06"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "分派与跟进",
+      "goal": "推动暂时无法解决的事项",
+      "inputs": [
+        "处理记录、负责成员、约定期限"
+      ],
+      "output": "谁在何时完成什么的跟进承诺",
+      "exception": "无人接手、逾期、外部操作失败 → 升级或改约",
+      "task_ids": [
+        "T08",
+        "T09",
+        "T13",
+        "F02",
+        "F07",
+        "F11"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "结案与重开",
+      "goal": "确认结果并处理再次发生的问题",
+      "inputs": [
+        "处理结果、关联工单、客户反馈"
+      ],
+      "output": "可追溯结果；需要时在原事项重开",
+      "exception": "客户未确认、仍有未完成工作 → 继续跟进",
+      "task_ids": [
+        "T10",
+        "T11",
+        "F05"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "复盘与补齐",
+      "goal": "减少下次重复遇到的阻碍",
+      "inputs": [
+        "事项结果、知识缺口、积压情况"
+      ],
+      "output": "有依据的知识更新或流程改进建议",
+      "exception": "缺少可靠统计/样本 → 先补口径和业务验证",
+      "task_ids": [
+        "T14",
+        "T15",
+        "T16",
+        "T17",
+        "F10",
+        "F13",
+        "F14"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "S01",
+      "title": "客户抱怨物流晚到",
+      "actor": "agent",
+      "trigger": "收到外语历史评价，客户询问晚到情况和处理办法",
+      "input": "评价原文 + 对应历史订单；事实演示，不等于实时业务",
+      "outcome": "日期事实有依据；答复、后续安排与尚缺的外部结果分开记录",
+      "task_ids": [
+        "T02",
+        "T04",
+        "T03",
+        "T05",
+        "T07",
+        "F01",
+        "T09",
+        "F05",
+        "T10"
+      ],
+      "decisions": [
+        {
+          "at": "T03",
+          "question": "能查到预计和实际日期吗？",
+          "yes": "比较日期并说明口径 → T05",
+          "no": "不猜测；补材料并约定核对 → F09 / T09",
+          "refs": [
+            "T03",
+            "F09",
+            "T09"
+          ]
+        },
+        {
+          "at": "T05",
+          "question": "赔付等规则有生效依据吗？",
+          "yes": "核对政策后准备回复 → T07",
+          "no": "登记知识缺口并继续跟进 → T15 / T09",
+          "refs": [
+            "T05",
+            "T15",
+            "T09"
+          ]
+        },
+        {
+          "at": "F01",
+          "question": "实际发送及客户处理结果能核实吗？",
+          "yes": "记录结果与确认，再决定结案 → F05 / T10",
+          "no": "人工客户结果可登记；真实发送失败/送达回执待接入，保留人工跟进",
+          "refs": [
+            "F01",
+            "F05",
+            "T10"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "knowledge",
+          "artifact": "未命中规则的原问题、订单事实与缺口记录",
+          "task": "T15"
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "title": "缺件或质量问题需要凭证",
+      "actor": "agent",
+      "trigger": "客户希望补发/退款，但现有材料不足",
+      "input": "客户诉求、商品与数量、已有材料说明",
+      "outcome": "缺少材料有明确清单；真正操作以平台结果为准",
+      "task_ids": [
+        "T02",
+        "F09",
+        "F03",
+        "T03",
+        "T05",
+        "F02",
+        "T09",
+        "F05",
+        "T10"
+      ],
+      "decisions": [
+        {
+          "at": "F09",
+          "question": "现有材料足以判断吗？",
+          "yes": "核对事实与适用规则 → T03 / T05",
+          "no": "列出缺少材料和下一次核对时间 → F09 / T09",
+          "refs": [
+            "F09",
+            "T03",
+            "T05",
+            "T09"
+          ]
+        },
+        {
+          "at": "F02",
+          "question": "有执行权限且平台返回成功吗？",
+          "yes": "记录真实结果，再确认客户状态 → F05",
+          "no": "保留失败/待执行状态；不声称已退款或补发",
+          "refs": [
+            "F02",
+            "F05"
+          ]
+        }
+      ],
+      "handoffs": []
+    },
+    {
+      "id": "S03",
+      "title": "下班时交给接班同事",
+      "actor": "handoff",
+      "trigger": "原客服下班，问题还需要继续处理",
+      "input": "同一工单、已核实内容、等待原因、下一步与期限",
+      "outcome": "接班人能够继续原事项；分派与确认接手是两个检查点",
+      "task_ids": [
+        "T09",
+        "T13",
+        "T08",
+        "F07",
+        "F11",
+        "T10",
+        "T11"
+      ],
+      "decisions": [
+        {
+          "at": "F07",
+          "question": "同事已经确认接手吗？",
+          "yes": "沿用原事项继续记录 → T08 / T09",
+          "no": "原责任人继续跟进；主管从等待接手/退回队列核对后调整 → T13",
+          "refs": [
+            "F07",
+            "T13",
+            "T08"
+          ]
+        },
+        {
+          "at": "F11",
+          "question": "在约定时间前能推进吗？",
+          "yes": "完成下一步并记录结果 → T10",
+          "no": "说明延期原因并重新安排；升级规则待验证",
+          "refs": [
+            "F11",
+            "T09",
+            "T10"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "handoff",
+          "artifact": "完整处理历史、待核对内容、下一步和期限",
+          "task": "T08"
+        },
+        {
+          "from_role": "handoff",
+          "to_role": "supervisor",
+          "artifact": "无法接手/逾期的原因与当前责任人",
+          "task": "T13"
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "title": "没有规则可答，交给知识维护",
+      "actor": "knowledge",
+      "trigger": "订单事实已知，但业务规则未命中或存在冲突",
+      "input": "原问题、检索结果和受影响事项",
+      "outcome": "可靠规则审核生效，并回到原事项核对新答复",
+      "task_ids": [
+        "T15",
+        "F10",
+        "T16",
+        "T17",
+        "F14",
+        "T05",
+        "T09"
+      ],
+      "decisions": [
+        {
+          "at": "F10",
+          "question": "这是有效的新知识缺口吗？",
+          "yes": "确认资料来源、分派维护 → T16",
+          "no": "填写原因后更正、撤销或合并缺口，原问题与来源事项保留",
+          "refs": [
+            "F10",
+            "T16"
+          ]
+        },
+        {
+          "at": "T16",
+          "question": "对应业务文档已经审核生效吗？",
+          "yes": "完成缺口并回查原事项 → F14 / T05",
+          "no": "保持维护中，客户事项继续跟进 → T09",
+          "refs": [
+            "T16",
+            "F14",
+            "T05",
+            "T09"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "knowledge",
+          "artifact": "客户原问题、已核对事实、缺少的具体规则",
+          "task": "T15"
+        },
+        {
+          "from_role": "knowledge",
+          "to_role": "agent",
+          "artifact": "生效版本及适用范围、需要重新核对的事项",
+          "task": "F14"
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "title": "处理中断、重复或客户再次联系",
+      "actor": "agent",
+      "trigger": "生成失败、多人同时修改、误建事项或结案后再次联系",
+      "input": "已保存的原话、原版本和原事项",
+      "outcome": "原记录可找回；冲突不静默覆盖；继续处理有明确去向",
+      "task_ids": [
+        "F06",
+        "T06",
+        "T05",
+        "F08",
+        "F04",
+        "T11",
+        "T09"
+      ],
+      "decisions": [
+        {
+          "at": "F06",
+          "question": "回复生成失败了吗？",
+          "yes": "保留原输入，重试同次请求，或停止重试后直接手写回复 → F06",
+          "no": "继续核对草稿 → T05",
+          "refs": [
+            "F06",
+            "T05"
+          ]
+        },
+        {
+          "at": "T06",
+          "question": "同事已保存新版本吗？",
+          "yes": "恢复未提交文字并核对新版，不直接覆盖",
+          "no": "恢复原编辑继续处理",
+          "refs": [
+            "T06"
+          ]
+        },
+        {
+          "at": "F08",
+          "question": "这是已存在事项的重复或原问题续办吗？",
+          "yes": "重复需合并/作废；原问题重开 → F08 / T11",
+          "no": "作为新的客户问题受理 → T02",
+          "refs": [
+            "F08",
+            "T11",
+            "T02"
+          ]
+        }
+      ],
+      "handoffs": []
+    },
+    {
+      "id": "S06",
+      "title": "对照外语原文和译文，不混淆导读",
+      "actor": "agent",
+      "trigger": "评价为葡萄牙语，中文导读不足以逐句核对",
+      "input": "客户评价原文及原始标题",
+      "outcome": "完整阅读中文译文并能核对原文；失败不影响原文",
+      "task_ids": [
+        "T02",
+        "T04"
+      ],
+      "decisions": [
+        {
+          "at": "T04",
+          "question": "中文译文已经可用且与当前原文匹配吗？",
+          "yes": "对照阅读，保留机器翻译标记",
+          "no": "读取失败可重试；原文变化需按新版本翻译",
+          "refs": [
+            "T02",
+            "T04"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "handoff",
+          "artifact": "完整阅读中文译文并能核对原文；失败不影响原文",
+          "task": "T04"
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "title": "已核验凭证又失效或被撤回",
+      "actor": "agent",
+      "trigger": "材料已核验，但发现照片不适用或需要归档",
+      "input": "原文件、材料状态、归档原因",
+      "outcome": "旧文件仍可追溯，新材料未核验前不误结案",
+      "task_ids": [
+        "F03",
+        "F09",
+        "T10"
+      ],
+      "decisions": [
+        {
+          "at": "F09",
+          "question": "当前还有适用且已核验的必要材料吗？",
+          "yes": "继续核对结案条件",
+          "no": "归档后重新收集或核验；撤回必须记录原因",
+          "refs": [
+            "F03",
+            "F09",
+            "T10"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "handoff",
+          "artifact": "旧文件仍可追溯，新材料未核验前不误结案",
+          "task": "F09"
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "title": "同事同时修改，保留自己的处理意图",
+      "actor": "agent",
+      "trigger": "两人同时准备回复、修改客户结果或工单",
+      "input": "服务端新版本与本地未提交文字",
+      "outcome": "不覆盖同事新版，能够明确保留或放弃旧草稿",
+      "task_ids": [
+        "T06",
+        "T09",
+        "F05"
+      ],
+      "decisions": [
+        {
+          "at": "T06",
+          "question": "保存版本是否仍为当前版本？",
+          "yes": "保存并保留修改轨迹",
+          "no": "拒绝覆盖，重读新版，核对后再提交或放弃旧稿",
+          "refs": [
+            "T06",
+            "T09",
+            "F05"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "handoff",
+          "artifact": "不覆盖同事新版，能够明确保留或放弃旧草稿",
+          "task": "T06"
+        }
+      ]
+    },
+    {
+      "id": "S09",
+      "title": "交接发出后又收到新材料",
+      "actor": "handoff",
+      "trigger": "发起交接后材料或回访安排发生变化",
+      "input": "待接受交接清单、当前独立待办",
+      "outcome": "拒绝旧清单接受，退回重发后按确认责任接手",
+      "task_ids": [
+        "T08",
+        "F07",
+        "F09",
+        "F05"
+      ],
+      "decisions": [
+        {
+          "at": "F07",
+          "question": "待办清单和责任安排仍与发起时一致吗？",
+          "yes": "接受并按逐项选择转移责任",
+          "no": "退回，由原负责人核对当前材料和回访后重发",
+          "refs": [
+            "T08",
+            "F07",
+            "F09",
+            "F05"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "handoff",
+          "to_role": "supervisor",
+          "artifact": "拒绝旧清单接受，退回重发后按确认责任接手",
+          "task": "F07"
+        }
+      ]
+    },
+    {
+      "id": "S10",
+      "title": "结案后客户再次投诉，需要重新确认",
+      "actor": "handoff",
+      "trigger": "上一轮确认解决后客户又提出同一问题",
+      "input": "旧确认、新客户原话、原工单",
+      "outcome": "原确认留作历史，本轮处理结果重新判断",
+      "task_ids": [
+        "T11",
+        "F05",
+        "T10"
+      ],
+      "decisions": [
+        {
+          "at": "F05",
+          "question": "客户确认是否属于本轮问题？",
+          "yes": "按本轮结果与剩余工作决定结案",
+          "no": "当前G03未修复：旧确认未失效；目标是重新登记或明确后续安排",
+          "refs": [
+            "T11",
+            "F05",
+            "T10"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "handoff",
+          "to_role": "supervisor",
+          "artifact": "原确认留作历史，本轮处理结果重新判断",
+          "task": "F05"
+        }
+      ]
+    },
+    {
+      "id": "S11",
+      "title": "响应丢失后恢复已完成的生成",
+      "actor": "agent",
+      "trigger": "服务端已完成，但浏览器没有收到响应",
+      "input": "原输入、同次请求标识、服务端回执",
+      "outcome": "恢复同一结果而非重复保存原话或生成第二份回复",
+      "task_ids": [
+        "F06",
+        "T06",
+        "T05"
+      ],
+      "decisions": [
+        {
+          "at": "F06",
+          "question": "服务端是否已有同次成功回执？",
+          "yes": "直接恢复已保存结果",
+          "no": "未知时保留输入重查；失败才重试同次请求或手写",
+          "refs": [
+            "F06",
+            "T06",
+            "T05"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "handoff",
+          "artifact": "恢复同一结果而非重复保存原话或生成第二份回复",
+          "task": "F06"
+        }
+      ]
+    },
+    {
+      "id": "S12",
+      "title": "受理中断或发现关联错了订单",
+      "actor": "agent",
+      "trigger": "填写受理信息中途退出，或发现需要更换关联订单",
+      "input": "未提交诉求、来源评价订单、拟关联订单",
+      "outcome": "不丢受理意图，评价与订单关系发生变化时可察觉并追溯",
+      "task_ids": [
+        "T02",
+        "T03",
+        "T06"
+      ],
+      "decisions": [
+        {
+          "at": "T03",
+          "question": "当前关联订单与评价原始订单一致吗？",
+          "yes": "继续核对事实",
+          "no": "当前G01/G04未修复：草稿与误关联提醒需补齐，不得混用事实",
+          "refs": [
+            "T02",
+            "T03",
+            "T06"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "agent",
+          "to_role": "handoff",
+          "artifact": "不丢受理意图，评价与订单关系发生变化时可察觉并追溯",
+          "task": "T03"
+        }
+      ]
+    },
+    {
+      "id": "S13",
+      "title": "误登记知识缺口后恢复或合并",
+      "actor": "knowledge",
+      "trigger": "发现缺口提错、撤销后需恢复或与另一事项重复",
+      "input": "原问题、撤销原因、来源事项、有效合并目标",
+      "outcome": "误登记和有效工作可区分，保留原文、原因、转向与双方来源",
+      "task_ids": [
+        "T15",
+        "F10",
+        "T16"
+      ],
+      "decisions": [
+        {
+          "at": "F10",
+          "question": "是同范围、有效且无循环的合并目标吗？",
+          "yes": "合并并保留来源；从目标继续维护",
+          "no": "拒绝自身/跨范围目标；撤销不关闭客户事项",
+          "refs": [
+            "T15",
+            "F10",
+            "T16"
+          ]
+        }
+      ],
+      "handoffs": [
+        {
+          "from_role": "knowledge",
+          "to_role": "handoff",
+          "artifact": "误登记和有效工作可区分，保留原文、原因、转向与双方来源",
+          "task": "F10"
+        }
+      ]
+    }
+  ],
+  "goal": "在承诺时间内，让客户问题有明确处理结果，并留下能够交接和核对的记录。",
+  "audience": "售后服务场景的当班客服、接班同事、主管与知识维护人员",
+  "research": {
+    "basis": "本机历史订单试用、两名成员交接演练和自动化检查；新增缺口来自业务推演",
+    "limits": "尚未完成真实客服访谈或生产观察；频率、损失、渠道、服务承诺与优先级仍需验证",
+    "questions": [
+      "你开始当班时怎样决定先处理哪一单？",
+      "什么情况下必须追补材料，通常卡在哪里？",
+      "交给同事后，怎样确认对方真的接手？",
+      "你们认定结案的条件是什么，是否需要客户确认？",
+      "哪些问题必须在外部系统完成，失败后谁负责？",
+      "每周主管根据哪些数据做什么决定？"
+    ]
+  },
+  "priority_guide": {
+    "P1": "先验证业务闭环或正式使用前置条件",
+    "P2": "随后验证协作、证据与承诺的一致性",
+    "P3": "核心流程验证后再评估分析深化",
+    "baseline": "当前本地可用基线；继续观察与回归"
+  },
+  "roadmap": [
+    {
+      "title": "当前基线",
+      "description": "本地受理、核对、回复准备、共享交接、期限跟进与知识维护",
+      "task_ids": [
+        "T01",
+        "T02",
+        "T03",
+        "T05",
+        "T08",
+        "T09",
+        "T10",
+        "T16"
+      ]
+    },
+    {
+      "title": "首批已补齐",
+      "description": "客户结果、材料追补/原始凭证、知识回查与缺口治理已有本地流程；真实业务规则继续验证",
+      "task_ids": [
+        "F05",
+        "F09",
+        "F03",
+        "F14",
+        "F10"
+      ]
+    },
+    {
+      "title": "正式业务接入前",
+      "description": "确认渠道、平台与身份边界，再安排真实执行与回执；不是已承诺排期",
+      "task_ids": [
+        "F01",
+        "F02",
+        "F12"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "name": "结案结果",
+      "definition": "本地结案记录与客户确认分开；实际解决需客户或业务平台证据",
+      "status": "人工客户结果和本地结案分开记录；真实渠道回执仍待接入",
+      "tasks": [
+        "T10",
+        "F05"
+      ]
+    },
+    {
+      "name": "交接完成",
+      "definition": "分派给某人，且对方确认接手；不能仅统计负责人字段改变",
+      "status": "分派、接受/退回、待接手队列均已本地支持；自动升级待补",
+      "tasks": [
+        "T08",
+        "F07"
+      ]
+    },
+    {
+      "name": "承诺履行",
+      "definition": "有负责人、约定下一步及期限；承诺时段和例外规则需业务定义",
+      "status": "本地期限已有，承诺规则待验证",
+      "tasks": [
+        "T09",
+        "F11"
+      ]
+    },
+    {
+      "name": "知识补齐",
+      "definition": "有可靠来源且审核生效，受影响事项已重新核对",
+      "status": "生效文档与明确关联事项的逐项回查已本地支持；语义影响范围待验证",
+      "tasks": [
+        "T16",
+        "F14"
+      ]
+    }
+  ],
+  "planning": {
+    "updated_at": "2026-10-27",
+    "owner": "产品维护者（业务责任人待指定）",
+    "purpose": "先补需求，再检查覆盖，最后按完整业务流程统一修改。",
+    "decision": "本轮扩大异常场景试用并更新地图；已复现问题保留为待修复，不因已有正常路径就声称整条流程无缺口。",
+    "scope": "本地售后工作台：历史样本、人工处理与本机协作。正式身份、真实发送与订单执行另列接入条件。",
+    "legend": {
+      "covered": "已支持（限定范围）",
+      "partial": "部分支持",
+      "missing": "尚未支持",
+      "external": "待业务接入"
+    },
+    "workflow": [
+      "补全角色、目标和任务",
+      "写清正常路径与异常退出",
+      "核对界面、接口与测试证据",
+      "按完整流程确定版本范围",
+      "统一修改后逐条验收"
+    ],
+    "methods": [
+      {
+        "name": "用户故事地图 · 主图",
+        "use": "按活动展开用户任务和具体需求，用版本范围组织开发；现状与目标可切换。",
+        "url": "https://www.jpattonassociates.com/wp-content/uploads/2015/03/story_mapping.pdf"
+      },
+      {
+        "name": "用户旅程图 · 研究补充",
+        "use": "围绕一个角色和场景记录行动、疑问和痛点；用户情绪与原话需要研究依据。",
+        "url": "https://www.nngroup.com/articles/journey-mapping-101/"
+      },
+      {
+        "name": "服务蓝图 · 协作补充",
+        "use": "复杂场景再展开客户、前台客服、后台处理和支持系统的交接；本轮不声称已完成服务蓝图。",
+        "url": "https://www.nngroup.com/articles/service-blueprints-definition/"
+      }
+    ],
+    "activities": [
+      {
+        "id": "A01",
+        "title": "开始当班",
+        "outcome": "明确本班优先事项与负责人",
+        "task_ids": [
+          "T01",
+          "T12",
+          "F12"
+        ]
+      },
+      {
+        "id": "A02",
+        "title": "受理与核对",
+        "outcome": "可核对的事实与客户诉求",
+        "task_ids": [
+          "T02",
+          "T03",
+          "T04",
+          "F03",
+          "F04",
+          "F08",
+          "F09"
+        ]
+      },
+      {
+        "id": "A03",
+        "title": "准备回复",
+        "outcome": "人工核对后的答复及使用依据",
+        "task_ids": [
+          "T05",
+          "T06",
+          "T07",
+          "F01",
+          "F06"
+        ]
+      },
+      {
+        "id": "A04",
+        "title": "分派与跟进",
+        "outcome": "谁在何时完成什么的跟进承诺",
+        "task_ids": [
+          "T08",
+          "T09",
+          "T13",
+          "F02",
+          "F07",
+          "F11"
+        ]
+      },
+      {
+        "id": "A05",
+        "title": "结案与重开",
+        "outcome": "可追溯结果；需要时在原事项重开",
+        "task_ids": [
+          "T10",
+          "T11",
+          "F05"
+        ]
+      },
+      {
+        "id": "A06",
+        "title": "复盘与补齐",
+        "outcome": "有依据的知识更新或流程改进建议",
+        "task_ids": [
+          "T14",
+          "T15",
+          "T16",
+          "T17",
+          "F10",
+          "F13",
+          "F14"
+        ]
+      }
+    ],
+    "stories": [
+      {
+        "id": "B01",
+        "activity_id": "A01",
+        "release_id": "R0",
+        "title": "安排本班责任与处理顺序",
+        "task_ids": [
+          "T01",
+          "T12"
+        ],
+        "benefit": "主管和客服能够找到下一件应处理的事",
+        "acceptance": [
+          {
+            "given": "当前成员已进入个人或共享范围",
+            "when": "筛选无人认领、到期和逾期",
+            "then": "能进入同一原工单；跨空间成员不能被分派"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E02"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "agent",
+          "supervisor"
+        ],
+        "group_ids": [
+          "G01",
+          "G02"
+        ]
+      },
+      {
+        "id": "B02",
+        "activity_id": "A02",
+        "release_id": "R0",
+        "title": "保留原话并核对受理事实",
+        "task_ids": [
+          "T02",
+          "T03",
+          "T04"
+        ],
+        "benefit": "回复可以区分客户原话、订单事实和机器翻译",
+        "acceptance": [
+          {
+            "given": "同一空间已有该评价事项",
+            "when": "再次受理同一评价",
+            "then": "打开原事项而非再建一单"
+          },
+          {
+            "given": "订单日期缺失或翻译失败",
+            "when": "核对时效或重试",
+            "then": "明确缺失信息或失败；不推测赔付政策"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E02",
+          "E04"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G03",
+          "G04"
+        ]
+      },
+      {
+        "id": "B03",
+        "activity_id": "A03",
+        "release_id": "R0",
+        "title": "形成、修订并交付本地回复稿",
+        "task_ids": [
+          "T05",
+          "T07",
+          "F06"
+        ],
+        "benefit": "模型不可用时也能完成本地回复准备",
+        "acceptance": [
+          {
+            "given": "模型失败或响应丢失",
+            "when": "重试同次请求或保存人工稿",
+            "then": "保留原话、不重复保存，人工稿可采用与导出"
+          },
+          {
+            "given": "政策引用已经失效",
+            "when": "尝试采用旧草稿",
+            "then": "要求重新核对依据，旧采用稿的历史仍保留"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E04"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G05",
+          "G06"
+        ]
+      },
+      {
+        "id": "B04",
+        "activity_id": "A03",
+        "release_id": "R0",
+        "title": "切换事项后恢复未提交内容",
+        "task_ids": [
+          "T06"
+        ],
+        "benefit": "多事项处理时不丢编辑内容",
+        "acceptance": [
+          {
+            "given": "当前浏览器有未提交草稿",
+            "when": "切换或刷新；同时服务端已存在新版",
+            "then": "保留本地文字并提示核对，不静默覆盖新版"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E04"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G05"
+        ]
+      },
+      {
+        "id": "B05",
+        "activity_id": "A04",
+        "release_id": "R0",
+        "title": "交接有接受、退回与持续责任",
+        "task_ids": [
+          "T08",
+          "T09",
+          "T13",
+          "F07"
+        ],
+        "benefit": "接班之前仍有人负责跟进",
+        "acceptance": [
+          {
+            "given": "甲发起交接给乙",
+            "when": "乙尚未接受或说明原因退回",
+            "then": "甲继续负责；期限、下一步与历史保留"
+          },
+          {
+            "given": "非候选成员或过期版本",
+            "when": "尝试确认交接",
+            "then": "操作被拒绝；候选人按当前版本接受后才切换责任人"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E02",
+          "E04"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "agent",
+          "handoff",
+          "supervisor"
+        ],
+        "group_ids": [
+          "G07"
+        ]
+      },
+      {
+        "id": "B06",
+        "activity_id": "A05",
+        "release_id": "R0",
+        "title": "记录内部结案并保留重开历史",
+        "task_ids": [
+          "T10",
+          "T11"
+        ],
+        "benefit": "已处理和继续跟进都有明确记录",
+        "acceptance": [
+          {
+            "given": "仍有关联未完成工单或待接受交接",
+            "when": "尝试直接结案",
+            "then": "阻止跳过未完成工作"
+          },
+          {
+            "given": "事项已经结案",
+            "when": "填写原因重开",
+            "then": "恢复原事项并保留上次结果和重开记录"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E02"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "agent",
+          "handoff"
+        ],
+        "group_ids": [
+          "G09",
+          "G10"
+        ]
+      },
+      {
+        "id": "B07",
+        "activity_id": "A06",
+        "release_id": "R0",
+        "title": "维护缺口与审核生效知识",
+        "task_ids": [
+          "T15",
+          "T16",
+          "T17"
+        ],
+        "benefit": "回复使用可核对的有效业务依据",
+        "acceptance": [
+          {
+            "given": "缺口拟关联测试、待审或归档文档",
+            "when": "尝试标记已补齐",
+            "then": "拒绝作为生效业务依据"
+          },
+          {
+            "given": "已有生效版且新版待审",
+            "when": "继续业务检索",
+            "then": "保留原生效版直到新版通过审核"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E02"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "agent",
+          "knowledge"
+        ],
+        "group_ids": [
+          "G11"
+        ]
+      },
+      {
+        "id": "B08",
+        "activity_id": "A06",
+        "release_id": "R0",
+        "title": "从累计指标回到原事项",
+        "task_ids": [
+          "T14"
+        ],
+        "benefit": "主管能核对积压和本地结果",
+        "acceptance": [
+          {
+            "given": "范围内有本地工单和事项",
+            "when": "查看服务概况并点击指标",
+            "then": "进入相应记录；草稿采用量不计作客户解决率"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E02"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本地回归证据可查",
+        "role_ids": [
+          "supervisor"
+        ],
+        "group_ids": [
+          "G12"
+        ]
+      },
+      {
+        "id": "N01",
+        "activity_id": "A05",
+        "release_id": "R1",
+        "title": "分别登记内部完成与客户结果",
+        "task_ids": [
+          "F05"
+        ],
+        "benefit": "客服交班时能知道客户是否认可及下一步",
+        "acceptance": [
+          {
+            "given": "内部执行已完成但客户未回复",
+            "when": "登记客户结果",
+            "then": "可选择待确认、确认解决、不认可或无法联系；不自动推断已解决"
+          },
+          {
+            "given": "客服人工记录客户反馈",
+            "when": "保存或更正结果",
+            "then": "记录反馈发生时间、录入人、说明与人工来源；更正保留历史"
+          },
+          {
+            "given": "客户不认可或仍待跟进",
+            "when": "决定是否结案",
+            "then": "按业务确认的退出规则要求负责人和下一步；无法联系不计入客户确认解决"
+          },
+          {
+            "given": "没有真实渠道回执",
+            "when": "查看人工登记结果",
+            "then": "明确人工登记，不生成已送达或客户已读状态"
+          }
+        ],
+        "evidence_ids": [
+          "E06",
+          "E07",
+          "E08"
+        ],
+        "depends_on": [
+          "B06"
+        ],
+        "implementation": "local",
+        "acceptance_state": "首批本地流程已验收；业务规则与生产效果待验证",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G09"
+        ]
+      },
+      {
+        "id": "N02",
+        "activity_id": "A02",
+        "release_id": "R1",
+        "title": "逐项追补并核验所需材料",
+        "task_ids": [
+          "F09"
+        ],
+        "benefit": "同事接手后能直接看到缺什么",
+        "acceptance": [
+          {
+            "given": "缺件事项材料不足",
+            "when": "创建追补清单",
+            "then": "每项有名称、必要性、负责人、期限及待收集/已收到/已核验状态"
+          },
+          {
+            "given": "材料已经收到但未核验",
+            "when": "切换接班成员",
+            "then": "保留收集状态和来源，不把已收到自动当作审核通过"
+          },
+          {
+            "given": "清单尚有必要材料缺失",
+            "when": "推进处理方案",
+            "then": "明确缺项和下一步，允许带原因记录例外而非静默跳过"
+          }
+        ],
+        "evidence_ids": [
+          "E06",
+          "E07",
+          "E08"
+        ],
+        "depends_on": [
+          "B02",
+          "B05"
+        ],
+        "implementation": "local",
+        "acceptance_state": "首批本地流程已验收；业务规则与生产效果待验证",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G04"
+        ]
+      },
+      {
+        "id": "N03",
+        "activity_id": "A02",
+        "release_id": "R1",
+        "title": "保存并查看属于当前事项的凭证",
+        "task_ids": [
+          "F03"
+        ],
+        "benefit": "授权同事能核对原始材料",
+        "acceptance": [
+          {
+            "given": "已选定事项和清单项",
+            "when": "上传允许类型与大小的文件",
+            "then": "附件绑定事项、上传人、时间和原始来源，可查看原文件"
+          },
+          {
+            "given": "非本事项可见范围的用户",
+            "when": "尝试访问附件",
+            "then": "拒绝访问；不能只隐藏前端链接"
+          },
+          {
+            "given": "文件过大、类型不允许或上传中断",
+            "when": "提交或重试",
+            "then": "清楚说明原因，不产生假成功或无法访问的清单项"
+          },
+          {
+            "given": "附件需移除或材料保留期到期",
+            "when": "按确定的保留规则处理",
+            "then": "有操作原因和历史；不擅自确定业务保留期"
+          }
+        ],
+        "evidence_ids": [
+          "E06",
+          "E07",
+          "E08"
+        ],
+        "depends_on": [
+          "N02"
+        ],
+        "implementation": "local",
+        "acceptance_state": "首批本地流程已验收；业务规则与生产效果待验证",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G04"
+        ]
+      },
+      {
+        "id": "N04",
+        "activity_id": "A06",
+        "release_id": "R1",
+        "title": "知识生效后逐项回查相关事项",
+        "task_ids": [
+          "F14"
+        ],
+        "benefit": "补齐规则能推动原事项继续处理",
+        "acceptance": [
+          {
+            "given": "业务文档审核生效并关联缺口",
+            "when": "查看影响范围",
+            "then": "列出通过缺口/引用明确关联的事项；注明范围，不声称穷尽语义相关事项"
+          },
+          {
+            "given": "相关事项需要重新核对",
+            "when": "负责人处理回查任务",
+            "then": "记录待回查/已回查/不适用、说明、处理人和依据版本"
+          },
+          {
+            "given": "多人同时回查或文档再次变更",
+            "when": "提交回查结果",
+            "then": "检查版本；保留历史，不自动改写已采用回复或重开已结案事项"
+          }
+        ],
+        "evidence_ids": [
+          "E06",
+          "E07",
+          "E08"
+        ],
+        "depends_on": [
+          "B07",
+          "B05"
+        ],
+        "implementation": "local",
+        "acceptance_state": "首批本地流程已验收；业务规则与生产效果待验证",
+        "role_ids": [
+          "knowledge"
+        ],
+        "group_ids": [
+          "G11"
+        ]
+      },
+      {
+        "id": "N05",
+        "activity_id": "A06",
+        "release_id": "R1",
+        "title": "更正、撤销或合并知识缺口",
+        "task_ids": [
+          "F10"
+        ],
+        "benefit": "知识维护队列保留有效工作",
+        "acceptance": [
+          {
+            "given": "问题描述错误或重复",
+            "when": "编辑原题、撤销或选择合并目标",
+            "then": "要求原因，保留原文和来源事项关系"
+          },
+          {
+            "given": "合并目标不存在、越权或形成循环",
+            "when": "确认合并",
+            "then": "拒绝操作；正常合并可从原记录找到目标"
+          },
+          {
+            "given": "缺口被撤销或合并",
+            "when": "查看客户事项",
+            "then": "不自动结案；继续保留客户跟进安排"
+          }
+        ],
+        "evidence_ids": [
+          "E06",
+          "E07",
+          "E08"
+        ],
+        "depends_on": [
+          "B07"
+        ],
+        "implementation": "local",
+        "acceptance_state": "首批本地流程已验收；业务规则与生产效果待验证",
+        "role_ids": [
+          "knowledge"
+        ],
+        "group_ids": [
+          "G11"
+        ]
+      },
+      {
+        "id": "N06",
+        "activity_id": "A02",
+        "release_id": "R2",
+        "title": "合并重复事项并撤销误建",
+        "task_ids": [
+          "F08"
+        ],
+        "benefit": "避免同一问题被重复推进",
+        "acceptance": [
+          {
+            "given": "人工发现同一范围内重复事项",
+            "when": "选择主事项并说明原因",
+            "then": "保留原话、工单、来源和转向关系，不重复计算当前待办"
+          },
+          {
+            "given": "跨空间、自己合并自己或已合并目标成环",
+            "when": "提交合并",
+            "then": "拒绝操作；撤销误建也需保留审计"
+          }
+        ],
+        "evidence_ids": [
+          "E01",
+          "E03",
+          "E05"
+        ],
+        "depends_on": [
+          "B02"
+        ],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收",
+        "role_ids": [
+          "supervisor"
+        ],
+        "group_ids": [
+          "G03"
+        ]
+      },
+      {
+        "id": "N07",
+        "activity_id": "A02",
+        "release_id": "R2",
+        "title": "按可靠客户标识查看历史问题",
+        "task_ids": [
+          "F04"
+        ],
+        "benefit": "客户再次联系时减少重复询问",
+        "acceptance": [
+          {
+            "given": "已有经过确认的稳定客户标识",
+            "when": "查看历史事项",
+            "then": "仅展示权限范围内可确认属于同一客户的记录"
+          },
+          {
+            "given": "只有匿名评价或相似名字",
+            "when": "尝试关联客户",
+            "then": "不自动认定为同一人；允许按订单或原事项人工查找"
+          }
+        ],
+        "evidence_ids": [
+          "E03",
+          "E05"
+        ],
+        "depends_on": [
+          "B02"
+        ],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G03"
+        ]
+      },
+      {
+        "id": "N08",
+        "activity_id": "A04",
+        "release_id": "R2",
+        "title": "按服务时段计算承诺并发现升级事项",
+        "task_ids": [
+          "F11"
+        ],
+        "benefit": "主管能解释期限和超时原因",
+        "acceptance": [
+          {
+            "given": "已有业务认可的承诺模板、工作时段和例外",
+            "when": "安排期限",
+            "then": "展示采用规则和计算结果；手动改期保留原因"
+          },
+          {
+            "given": "事项进入等待、临近到期或超时",
+            "when": "计算剩余时间与升级",
+            "then": "按明确暂停规则处理，主管可查升级原因；是否通知另行配置"
+          }
+        ],
+        "evidence_ids": [
+          "E02",
+          "E03",
+          "E05"
+        ],
+        "depends_on": [
+          "B05"
+        ],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收",
+        "role_ids": [
+          "supervisor"
+        ],
+        "group_ids": [
+          "G08"
+        ]
+      },
+      {
+        "id": "N09",
+        "activity_id": "A06",
+        "release_id": "R2",
+        "title": "按周期核对效率与重复问题",
+        "task_ids": [
+          "F13"
+        ],
+        "benefit": "主管能根据可解释的数据决定改进",
+        "acceptance": [
+          {
+            "given": "选择明确周期和工作范围",
+            "when": "查看处理时长与原因分布",
+            "then": "显示时间口径、样本数及缺失数，可回查原事项"
+          },
+          {
+            "given": "存在重开、等待与人工客户结果",
+            "when": "计算指标",
+            "then": "区分首次响应、内部完成、客户确认；无样本显示暂无数据"
+          }
+        ],
+        "evidence_ids": [
+          "E02",
+          "E03",
+          "E05"
+        ],
+        "depends_on": [
+          "N01",
+          "B08"
+        ],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收",
+        "role_ids": [
+          "supervisor"
+        ],
+        "group_ids": [
+          "G12"
+        ]
+      },
+      {
+        "id": "P01",
+        "activity_id": "A03",
+        "release_id": "RG",
+        "title": "发送真实消息并核对回执",
+        "task_ids": [
+          "F01"
+        ],
+        "benefit": "能够核实对客消息的执行结果",
+        "acceptance": [
+          {
+            "given": "渠道与收件人已授权",
+            "when": "正式发送或网络失败重试",
+            "then": "幂等发送并保存真实平台回执；失败有可恢复状态"
+          }
+        ],
+        "evidence_ids": [
+          "E03",
+          "E05"
+        ],
+        "depends_on": [
+          "P03",
+          "B03"
+        ],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G06"
+        ]
+      },
+      {
+        "id": "P02",
+        "activity_id": "A04",
+        "release_id": "RG",
+        "title": "执行退款或补发并核对平台结果",
+        "task_ids": [
+          "F02"
+        ],
+        "benefit": "处理方案可以对应实际订单结果",
+        "acceptance": [
+          {
+            "given": "平台权限、规则与审批均满足",
+            "when": "执行或重试",
+            "then": "记录外部操作标识和最终结果；不重复退款/补发，失败后明确责任人"
+          }
+        ],
+        "evidence_ids": [
+          "E03",
+          "E05"
+        ],
+        "depends_on": [
+          "P03",
+          "B05"
+        ],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G08"
+        ]
+      },
+      {
+        "id": "P03",
+        "activity_id": "A01",
+        "release_id": "RG",
+        "title": "使用可信身份与组织授权",
+        "task_ids": [
+          "F12"
+        ],
+        "benefit": "正式多人服务时有可信的权限边界",
+        "acceptance": [
+          {
+            "given": "员工加入、调岗或离职",
+            "when": "访问事项、知识与附件",
+            "then": "按组织授权限制访问并记录审计；本地标识不作为企业登录"
+          }
+        ],
+        "evidence_ids": [
+          "E03",
+          "E05"
+        ],
+        "depends_on": [],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收",
+        "role_ids": [
+          "supervisor"
+        ],
+        "group_ids": [
+          "G01"
+        ]
+      },
+      {
+        "id": "N10",
+        "activity_id": "A02",
+        "release_id": "R0",
+        "title": "直接对照客户原文查看已保存中文译文",
+        "task_ids": [
+          "T04"
+        ],
+        "benefit": "直接对照客户原文查看已保存中文译文",
+        "acceptance": [
+          {
+            "given": "客户反馈为外语",
+            "when": "展开、收起或刷新译文",
+            "then": "原文保留、译文标明机器翻译，已保存结果不重复调用模型"
+          },
+          {
+            "given": "译文读取失败",
+            "when": "原位重试",
+            "then": "原文可继续阅读，恢复后读取原译文"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E12"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本轮代理模拟试用通过列明分支；真实业务效果待验证",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G04"
+        ]
+      },
+      {
+        "id": "N11",
+        "activity_id": "A03",
+        "release_id": "R0",
+        "title": "指定回复译稿保留来源并阻止采用旧译稿",
+        "task_ids": [
+          "T05",
+          "T07"
+        ],
+        "benefit": "指定回复译稿保留来源并阻止采用旧译稿",
+        "acceptance": [
+          {
+            "given": "已保存回复需要外语版本",
+            "when": "选择目标语言翻译",
+            "then": "另存译稿并保留原文快照"
+          },
+          {
+            "given": "同事已修改原稿",
+            "when": "尝试采用旧译稿",
+            "then": "拒绝采用，要求按新来源重新翻译"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E12"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本轮代理模拟试用通过列明分支；真实业务效果待验证",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G05",
+          "G06"
+        ]
+      },
+      {
+        "id": "N12",
+        "activity_id": "A04",
+        "release_id": "R0",
+        "title": "逐项交接材料和回访并处理清单变化",
+        "task_ids": [
+          "T08",
+          "F07",
+          "T09"
+        ],
+        "benefit": "逐项交接材料和回访并处理清单变化",
+        "acceptance": [
+          {
+            "given": "工单有独立材料和回访",
+            "when": "选择分别移交或保留责任",
+            "then": "接班人接受后对应待办按选择变更"
+          },
+          {
+            "given": "交接后材料有新变化",
+            "when": "候选人尝试接受",
+            "then": "拒绝旧清单，支持带原因退回后重发"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E12"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本轮代理模拟试用通过列明分支；真实业务效果待验证",
+        "role_ids": [
+          "agent",
+          "handoff"
+        ],
+        "group_ids": [
+          "G07"
+        ]
+      },
+      {
+        "id": "N13",
+        "activity_id": "A05",
+        "release_id": "R2",
+        "title": "重开后只使用本轮客户确认决定结案",
+        "task_ids": [
+          "T10",
+          "T11",
+          "F05"
+        ],
+        "benefit": "重开后只使用本轮客户确认决定结案",
+        "acceptance": [
+          {
+            "given": "上一轮已确认解决",
+            "when": "录入新问题或手动重开",
+            "then": "旧确认保留为历史，本轮需重新确认"
+          },
+          {
+            "given": "本轮尚未确认",
+            "when": "尝试复用旧确认结案",
+            "then": "禁止复用；可明确仍需跟进或填写无需回访原因"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E11"
+        ],
+        "depends_on": [],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收（本次试用发现问题）",
+        "role_ids": [
+          "agent",
+          "handoff"
+        ],
+        "group_ids": [
+          "G09",
+          "G10"
+        ]
+      },
+      {
+        "id": "N14",
+        "activity_id": "A02",
+        "release_id": "R0",
+        "title": "凭证归档或材料撤回后重新核验",
+        "task_ids": [
+          "F03",
+          "F09"
+        ],
+        "benefit": "凭证归档或材料撤回后重新核验",
+        "acceptance": [
+          {
+            "given": "材料已经核验",
+            "when": "归档不再适用的凭证",
+            "then": "原文件与原因保留，材料不能继续冒用已核验状态"
+          },
+          {
+            "given": "材料已失效且仍为必要项",
+            "when": "尝试结案",
+            "then": "阻止跳过；重新追补、核验或带原因处理清单"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E12"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本轮代理模拟试用通过列明分支；真实业务效果待验证",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G04"
+        ]
+      },
+      {
+        "id": "N15",
+        "activity_id": "A03",
+        "release_id": "R0",
+        "title": "恢复响应丢失并保留并发编辑文字",
+        "task_ids": [
+          "T06",
+          "F06"
+        ],
+        "benefit": "恢复响应丢失并保留并发编辑文字",
+        "acceptance": [
+          {
+            "given": "服务端已成功但浏览器丢失响应",
+            "when": "恢复本次生成",
+            "then": "仅保存一次输入和一次结果"
+          },
+          {
+            "given": "本地与服务端版本不同",
+            "when": "提交并重读当前记录",
+            "then": "拒绝覆盖新版，保留未提交文字供核对"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E12"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本轮代理模拟试用通过列明分支；真实业务效果待验证",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G05"
+        ]
+      },
+      {
+        "id": "N16",
+        "activity_id": "A02",
+        "release_id": "R2",
+        "title": "保留受理草稿并显式核对改关联订单",
+        "task_ids": [
+          "T02",
+          "T03"
+        ],
+        "benefit": "保留受理草稿并显式核对改关联订单",
+        "acceptance": [
+          {
+            "given": "受理信息未提交",
+            "when": "关闭后重开或切换事项",
+            "then": "按人、范围、事项恢复，或明确确认放弃"
+          },
+          {
+            "given": "原评价带有订单来源",
+            "when": "关联另一个订单",
+            "then": "告知不一致并记录理由，后续持续区分事实来源"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E11"
+        ],
+        "depends_on": [],
+        "implementation": "planned",
+        "acceptance_state": "目标验收条件，尚未实现或验收（本次试用发现问题）",
+        "role_ids": [
+          "agent"
+        ],
+        "group_ids": [
+          "G03",
+          "G04"
+        ]
+      },
+      {
+        "id": "N17",
+        "activity_id": "A06",
+        "release_id": "R0",
+        "title": "误登记知识缺口可以恢复和合并",
+        "task_ids": [
+          "T15",
+          "F10"
+        ],
+        "benefit": "误登记知识缺口可以恢复和合并",
+        "acceptance": [
+          {
+            "given": "缺口被误登记",
+            "when": "更正、撤销或恢复并说明原因",
+            "then": "保留原问题和来源，不关闭客户事项"
+          },
+          {
+            "given": "同范围重复缺口",
+            "when": "合并到有效目标",
+            "then": "保留双方来源、转向和历史，自合并与循环被拒绝"
+          }
+        ],
+        "evidence_ids": [
+          "E09",
+          "E12"
+        ],
+        "depends_on": [],
+        "implementation": "local",
+        "acceptance_state": "本轮代理模拟试用通过列明分支；真实业务效果待验证",
+        "role_ids": [
+          "agent",
+          "knowledge"
+        ],
+        "group_ids": [
+          "G11"
+        ]
+      }
+    ],
+    "flows": [
+      {
+        "id": "C01",
+        "title": "物流晚到：从受理到客户结果",
+        "scenario_ids": [
+          "S01"
+        ],
+        "scope": "包含对客发送与客户结果登记",
+        "status": "partial",
+        "task_ids": [
+          "T02",
+          "T03",
+          "T04",
+          "T05",
+          "T07",
+          "F01",
+          "T09",
+          "F05",
+          "T10"
+        ],
+        "checks": [
+          {
+            "id": "C01a",
+            "text": "原文、订单日期与回复依据可核对",
+            "result": "covered",
+            "evidence_ids": [
+              "E01",
+              "E04"
+            ]
+          },
+          {
+            "id": "C01b",
+            "text": "真实发送、送达或失败回执",
+            "result": "external",
+            "evidence_ids": [
+              "E03"
+            ]
+          },
+          {
+            "id": "C01c",
+            "text": "客户认可、不认可或待确认分别记录",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          }
+        ],
+        "gap": "本地回复准备、客户结果和跟进已有；真实渠道发送/回执仍未接入",
+        "next_story_ids": [
+          "P01"
+        ]
+      },
+      {
+        "id": "C02",
+        "title": "缺件/质量：补齐材料再制定方案",
+        "scenario_ids": [
+          "S02"
+        ],
+        "scope": "材料清单、原文件与人工核验，不包含真实补发执行",
+        "status": "covered",
+        "task_ids": [
+          "T02",
+          "F09",
+          "F03",
+          "T03",
+          "T05"
+        ],
+        "checks": [
+          {
+            "id": "C02a",
+            "text": "记录商品、数量、诉求与材料说明",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          },
+          {
+            "id": "C02b",
+            "text": "逐项追补、已收到与已核验分别记录",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          },
+          {
+            "id": "C02c",
+            "text": "保存凭证原文件并按事项权限访问",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          }
+        ],
+        "gap": "本地材料清单、原文件、权限与核验已支持；材料真实性和业务模板仍需人工确认",
+        "next_story_ids": []
+      },
+      {
+        "id": "C03",
+        "title": "交接班：接受或退回并继续负责",
+        "scenario_ids": [
+          "S03"
+        ],
+        "scope": "本地成员人工交接；自动升级与企业账号属于其他流程",
+        "status": "covered",
+        "task_ids": [
+          "T09",
+          "T13",
+          "T08",
+          "F07"
+        ],
+        "checks": [
+          {
+            "id": "C03a",
+            "text": "接受前原责任人持续负责，退回需要原因",
+            "result": "covered",
+            "evidence_ids": [
+              "E01",
+              "E04"
+            ]
+          },
+          {
+            "id": "C03b",
+            "text": "候选人、版本与待交接结案限制",
+            "result": "covered",
+            "evidence_ids": [
+              "E01"
+            ]
+          },
+          {
+            "id": "C03c",
+            "text": "待我接手、等待接手和退回队列可查",
+            "result": "covered",
+            "evidence_ids": [
+              "E02",
+              "E04"
+            ]
+          }
+        ],
+        "gap": "当前范围本地支持；真实班次节奏和可用性仍需业务观察",
+        "next_story_ids": [
+          "N08"
+        ]
+      },
+      {
+        "id": "C04",
+        "title": "缺少规则：维护生效后回到原事项",
+        "scenario_ids": [
+          "S04"
+        ],
+        "scope": "包含缺口治理和明确关联事项逐项回查",
+        "status": "covered",
+        "task_ids": [
+          "T15",
+          "F10",
+          "T16",
+          "T17",
+          "F14",
+          "T05"
+        ],
+        "checks": [
+          {
+            "id": "C04a",
+            "text": "缺口登记、分派、生效文档校验",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          },
+          {
+            "id": "C04b",
+            "text": "更正、撤销或合并误登记缺口",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          },
+          {
+            "id": "C04c",
+            "text": "影响事项清单与逐项回查状态",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          }
+        ],
+        "gap": "缺口治理、生效版本和明确关联事项回查已支持；自动联系与语义影响推断不在本地范围",
+        "next_story_ids": []
+      },
+      {
+        "id": "C05",
+        "title": "生成中断：恢复或手写继续回复",
+        "scenario_ids": [
+          "S05"
+        ],
+        "scope": "本地回复准备和当前浏览器编辑恢复；不含真实消息重发",
+        "status": "covered",
+        "task_ids": [
+          "F06",
+          "T06",
+          "T05",
+          "T07"
+        ],
+        "checks": [
+          {
+            "id": "C05a",
+            "text": "网络未达服务端时输入可恢复",
+            "result": "covered",
+            "evidence_ids": [
+              "E04"
+            ]
+          },
+          {
+            "id": "C05b",
+            "text": "响应丢失或重试不重复原话与回复",
+            "result": "covered",
+            "evidence_ids": [
+              "E01",
+              "E04"
+            ]
+          },
+          {
+            "id": "C05c",
+            "text": "无需模型保存人工稿、采用、复制与导出",
+            "result": "covered",
+            "evidence_ids": [
+              "E01",
+              "E04"
+            ]
+          }
+        ],
+        "gap": "本地流程已有；历史浏览器故障模拟证据与本轮后端回归分开标记",
+        "next_story_ids": []
+      },
+      {
+        "id": "C06",
+        "title": "内部完成之后确认客户结果",
+        "scenario_ids": [
+          "S01",
+          "S02"
+        ],
+        "scope": "人工登记反馈及来源，不要求先连接渠道",
+        "status": "partial",
+        "task_ids": [
+          "F05",
+          "T10",
+          "T11"
+        ],
+        "checks": [
+          {
+            "id": "C06a",
+            "text": "内部完成与客户结果使用独立字段",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          },
+          {
+            "id": "C06b",
+            "text": "人工来源、反馈时间、更正历史与下一步",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          },
+          {
+            "id": "C06c",
+            "text": "无法联系不计入客户确认解决",
+            "result": "covered",
+            "evidence_ids": [
+              "E06",
+              "E07"
+            ]
+          },
+          {
+            "id": "C06d",
+            "text": "客户再次提出问题后不能复用上一轮客户确认",
+            "result": "missing",
+            "evidence_ids": [
+              "E09",
+              "E11"
+            ]
+          }
+        ],
+        "gap": "当前结果登记、内部结案和后续安排已有；G03已复现：重开后旧确认仍可用于再次结案。",
+        "next_story_ids": [
+          "N13"
+        ]
+      },
+      {
+        "id": "C07",
+        "title": "重复与误建：保留记录后合并/撤销",
+        "scenario_ids": [
+          "S05"
+        ],
+        "scope": "评价受理去重以及人工、跨来源重复治理",
+        "status": "partial",
+        "task_ids": [
+          "T02",
+          "F08"
+        ],
+        "checks": [
+          {
+            "id": "C07a",
+            "text": "同一空间同一评价受理去重",
+            "result": "covered",
+            "evidence_ids": [
+              "E01"
+            ]
+          },
+          {
+            "id": "C07b",
+            "text": "已有人工重复事项合并与误建撤销",
+            "result": "missing",
+            "evidence_ids": [
+              "E03"
+            ]
+          }
+        ],
+        "gap": "自动防重复受理已有；已产生的重复事项没有治理入口",
+        "next_story_ids": [
+          "N06"
+        ]
+      },
+      {
+        "id": "C08",
+        "title": "服务承诺：计算期限与超时升级",
+        "scenario_ids": [
+          "S03"
+        ],
+        "scope": "含工作时段、等待暂停规则与升级责任",
+        "status": "partial",
+        "task_ids": [
+          "T09",
+          "F11",
+          "T13"
+        ],
+        "checks": [
+          {
+            "id": "C08a",
+            "text": "手工期限、下一步、到期和逾期队列",
+            "result": "covered",
+            "evidence_ids": [
+              "E01",
+              "E02"
+            ]
+          },
+          {
+            "id": "C08b",
+            "text": "承诺模板、工作日计算、暂停和升级",
+            "result": "missing",
+            "evidence_ids": [
+              "E03"
+            ]
+          }
+        ],
+        "gap": "能看到手填期限是否超时；统一业务承诺规则尚未配置",
+        "next_story_ids": [
+          "N08"
+        ]
+      },
+      {
+        "id": "C09",
+        "title": "周期复盘：效率与原因趋势",
+        "scenario_ids": [],
+        "scope": "按周期核对业务耗时、原因与样本数",
+        "status": "partial",
+        "task_ids": [
+          "T14",
+          "F13"
+        ],
+        "checks": [
+          {
+            "id": "C09a",
+            "text": "累计本地数量、积压、重开和原事项回查",
+            "result": "covered",
+            "evidence_ids": [
+              "E01",
+              "E02"
+            ]
+          },
+          {
+            "id": "C09b",
+            "text": "周期、处理时长、原因趋势与缺失样本",
+            "result": "missing",
+            "evidence_ids": [
+              "E03"
+            ]
+          }
+        ],
+        "gap": "当前累计统计不能回答本周是否比上周更快及具体原因",
+        "next_story_ids": [
+          "N09"
+        ]
+      },
+      {
+        "id": "C10",
+        "title": "客户再次联系时找到历史事项",
+        "scenario_ids": [
+          "S05"
+        ],
+        "scope": "按可靠客户标识跨事项查找；原工单重开另已有支持",
+        "status": "missing",
+        "task_ids": [
+          "F04",
+          "T11"
+        ],
+        "checks": [
+          {
+            "id": "C10a",
+            "text": "按稳定客户标识查看多次联系历史",
+            "result": "missing",
+            "evidence_ids": [
+              "E03"
+            ]
+          },
+          {
+            "id": "C10b",
+            "text": "匿名评价不被猜测合并成同一客户",
+            "result": "covered",
+            "evidence_ids": [
+              "E03"
+            ]
+          }
+        ],
+        "gap": "可重开已知原事项；尚无可靠客户身份与跨事项历史入口",
+        "next_story_ids": [
+          "N07"
+        ]
+      },
+      {
+        "id": "C11",
+        "title": "正式业务接入与可信授权",
+        "scenario_ids": [
+          "S01",
+          "S02"
+        ],
+        "scope": "真实渠道、退款补发平台以及企业身份系统",
+        "status": "external",
+        "task_ids": [
+          "F01",
+          "F02",
+          "F12"
+        ],
+        "checks": [
+          {
+            "id": "C11a",
+            "text": "真实发送回执与订单执行结果",
+            "result": "external",
+            "evidence_ids": [
+              "E03"
+            ]
+          },
+          {
+            "id": "C11b",
+            "text": "企业登录、组织授权、离职撤权与知识隔离",
+            "result": "external",
+            "evidence_ids": [
+              "E03"
+            ]
+          }
+        ],
+        "gap": "需要先确认渠道、平台与身份系统及授权范围，再安排接入",
+        "next_story_ids": [
+          "P01",
+          "P02",
+          "P03"
+        ]
+      },
+      {
+        "id": "C12",
+        "title": "外语评价与外语回复的来源核对",
+        "scenario_ids": [
+          "S06"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "covered",
+        "task_ids": [
+          "T04",
+          "T05",
+          "T07"
+        ],
+        "checks": [
+          {
+            "id": "C12a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C12b",
+            "text": "异常分支均有可继续处理的出口",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          }
+        ],
+        "gap": "原文译文缓存、失败重试和回复译稿来源检查已支持；语言准确性仍需人工核对",
+        "next_story_ids": []
+      },
+      {
+        "id": "C13",
+        "title": "凭证失效：从核验回到追补",
+        "scenario_ids": [
+          "S07"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "covered",
+        "task_ids": [
+          "F03",
+          "F09",
+          "T10"
+        ],
+        "checks": [
+          {
+            "id": "C13a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C13b",
+            "text": "异常分支均有可继续处理的出口",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          }
+        ],
+        "gap": "上传、核验、归档和结案检查已实际串联；不自动判断照片真实性",
+        "next_story_ids": []
+      },
+      {
+        "id": "C14",
+        "title": "多人保存：冲突后继续处理",
+        "scenario_ids": [
+          "S08"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "covered",
+        "task_ids": [
+          "T06",
+          "T09",
+          "F05"
+        ],
+        "checks": [
+          {
+            "id": "C14a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C14b",
+            "text": "异常分支均有可继续处理的出口",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          }
+        ],
+        "gap": "回复、工单及客户结果并发变更保留草稿并拒绝覆盖；限本浏览器未提交内容",
+        "next_story_ids": []
+      },
+      {
+        "id": "C15",
+        "title": "交接中变化：退回后按当前清单接手",
+        "scenario_ids": [
+          "S09"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "covered",
+        "task_ids": [
+          "T08",
+          "F07",
+          "F09",
+          "F05"
+        ],
+        "checks": [
+          {
+            "id": "C15a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C15b",
+            "text": "异常分支均有可继续处理的出口",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          }
+        ],
+        "gap": "材料变化拒绝旧接受；退回重发后独立材料与回访按选择分配",
+        "next_story_ids": []
+      },
+      {
+        "id": "C16",
+        "title": "客户再投诉：按本轮结果重新结案",
+        "scenario_ids": [
+          "S10"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "partial",
+        "task_ids": [
+          "T11",
+          "F05",
+          "T10"
+        ],
+        "checks": [
+          {
+            "id": "C16a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C16b",
+            "text": "已发现的异常缺口按目标验收修复",
+            "result": "missing",
+            "evidence_ids": [
+              "E11"
+            ]
+          }
+        ],
+        "gap": "自动重开保留历史，但仍能复用旧确认，G03待修复",
+        "next_story_ids": [
+          "N13"
+        ]
+      },
+      {
+        "id": "C17",
+        "title": "网络响应丢失：恢复已完成的结果",
+        "scenario_ids": [
+          "S11"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "covered",
+        "task_ids": [
+          "F06",
+          "T06",
+          "T05"
+        ],
+        "checks": [
+          {
+            "id": "C17a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C17b",
+            "text": "异常分支均有可继续处理的出口",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          }
+        ],
+        "gap": "浏览器注入响应丢失，服务端回执恢复未重复保存；不代表所有真实网络环境已验证",
+        "next_story_ids": []
+      },
+      {
+        "id": "C18",
+        "title": "受理中断与误关联订单",
+        "scenario_ids": [
+          "S12"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "partial",
+        "task_ids": [
+          "T02",
+          "T03",
+          "T06"
+        ],
+        "checks": [
+          {
+            "id": "C18a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C18b",
+            "text": "已发现的异常缺口按目标验收修复",
+            "result": "missing",
+            "evidence_ids": [
+              "E11"
+            ]
+          }
+        ],
+        "gap": "错误订单号被拒绝；G01草稿丢失、G04有效但错误的订单缺少不一致提示仍待修复",
+        "next_story_ids": [
+          "N16"
+        ]
+      },
+      {
+        "id": "C19",
+        "title": "知识缺口：更正、撤销、恢复与合并",
+        "scenario_ids": [
+          "S13"
+        ],
+        "scope": "本地代理模拟试用；具体操作与未测试边界见E09。",
+        "status": "covered",
+        "task_ids": [
+          "T15",
+          "F10",
+          "T16"
+        ],
+        "checks": [
+          {
+            "id": "C19a",
+            "text": "完成列明的正常路径并保留原记录与结果",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          },
+          {
+            "id": "C19b",
+            "text": "异常分支均有可继续处理的出口",
+            "result": "covered",
+            "evidence_ids": [
+              "E09"
+            ]
+          }
+        ],
+        "gap": "原题更正、恢复与合并保留来源已试用；本轮不发布新的业务规则",
+        "next_story_ids": []
+      }
+    ],
+    "releases": [
+      {
+        "id": "R0",
+        "name": "现状基线 · 本地准备与协作",
+        "state": "本地已有",
+        "goal": "从受理、事实核对、回复准备到人工交接和内部结案有记录。",
+        "exit": "限定本地工作范围；客户确认、真实发送和平台执行继续单独列缺口。",
+        "inherits": [],
+        "story_ids": [
+          "B01",
+          "B02",
+          "B03",
+          "B04",
+          "B05",
+          "B06",
+          "B07",
+          "B08",
+          "N10",
+          "N11",
+          "N12",
+          "N14",
+          "N15",
+          "N17"
+        ]
+      },
+      {
+        "id": "R1",
+        "name": "第一轮 · 本地记录闭环",
+        "state": "本地已实现",
+        "goal": "材料有清单，客户结果可人工登记，知识更新能回到相关事项。",
+        "exit": "N01—N05已完成本地流程验收；仍需确认真实业务退出规则、材料模板和凭证保留期。实际发送与平台执行另行接入。",
+        "inherits": [
+          "R0"
+        ],
+        "story_ids": [
+          "N01",
+          "N02",
+          "N03",
+          "N04",
+          "N05"
+        ]
+      },
+      {
+        "id": "R2",
+        "name": "建议后续 · 队列治理与效率",
+        "state": "待验证",
+        "goal": "减少重复事项和重复核对，并解释服务承诺与周期效率。",
+        "exit": "先确认可靠客户标识、工作时间和指标口径；按对应场景整体验收。",
+        "inherits": [
+          "R0",
+          "R1"
+        ],
+        "story_ids": [
+          "N06",
+          "N07",
+          "N08",
+          "N09",
+          "N13",
+          "N16"
+        ]
+      },
+      {
+        "id": "RG",
+        "name": "正式使用前 · 接入条件",
+        "state": "依赖外部系统",
+        "goal": "确定真实渠道、平台执行与可信身份授权边界。",
+        "exit": "有明确业务系统、接口权限与责任人后，再确定接入次序；不是紧接R2的承诺排期。",
+        "inherits": [
+          "R0"
+        ],
+        "story_ids": [
+          "P01",
+          "P02",
+          "P03"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "E01",
+        "kind": "首批实施前 · 本轮后端回归",
+        "title": "隔离测试库中的功能与权限回归",
+        "detail": "此为实施前快照，用于追溯；新版首批能力见E06—E08。后端测试覆盖受理去重、期限、交接、结案、知识审核、失败恢复与人工稿；结果见随附后端测试记录，不代表真实业务有效性。",
+        "path": "outputs/taskmap-v3/后端测试.txt"
+      },
+      {
+        "id": "E02",
+        "kind": "首批实施前 · 本轮浏览器与接口核对",
+        "title": "只读检查当前业务入口和字段",
+        "detail": "此为实施前快照，用于追溯；新版首批能力见E06—E08。查看已存在验收样本、待办、知识与统计入口；检查API模型。该证据说明现有入口和字段，不等同于本轮重新执行所有业务分支。",
+        "path": "outputs/taskmap-v3/产品覆盖检查.json"
+      },
+      {
+        "id": "E03",
+        "kind": "首批实施前 · 本轮实现核查",
+        "title": "前端操作与后端请求模型核对",
+        "detail": "此为实施前快照，用于追溯；新版首批能力见E06—E08。核对TicketPatch/ConversationPatch/IntakeInput/GapEdit、operations队列/报告及App/KnowledgeGapPanel；未实现项不能凭已有备注或相似按钮判作支持。",
+        "path": "outputs/taskmap-v3/实现核查.json"
+      },
+      {
+        "id": "E04",
+        "kind": "历史浏览器演练",
+        "title": "上一轮失败恢复与双成员交接",
+        "detail": "2026-10-25：17项浏览器检查及12项接口/重启检查；保留原日期，故障由自动化模拟。",
+        "path": "outputs/fixes/浏览器验收.json"
+      },
+      {
+        "id": "E05",
+        "kind": "需求假设",
+        "title": "用户提出的方向与业务推演",
+        "detail": "场景价值、频率和退出规则尚未经过真实客服访谈或生产观察。目标验收条件不代表功能已通过测试。",
+        "path": ""
+      },
+      {
+        "id": "E06",
+        "kind": "首批后端回归",
+        "title": "结果、材料、附件、缺口治理与回查测试",
+        "detail": "隔离测试库验证权限、版本冲突、事务持久化、结案约束、合并防循环和明确关联回查；结果见本轮测试记录。",
+        "path": "outputs/r1/后端测试.txt"
+      },
+      {
+        "id": "E07",
+        "kind": "首批浏览器流程",
+        "title": "材料→客户结果→缺口合并→版本回查",
+        "detail": "本地浏览器串联验证首批流程。临时文档元数据不进入检索索引，验收后归档；不证明真实规则正确或客户已解决。",
+        "path": "outputs/r1/浏览器验收.json"
+      },
+      {
+        "id": "E08",
+        "kind": "首批接口与重启",
+        "title": "新记录、原文件和结果重启后保留",
+        "detail": "接口和重启验证新记录及原始凭证持久化；不执行外部退款、发送或通知。",
+        "path": "outputs/r1/接口与重启验收.json"
+      },
+      {
+        "id": "E09",
+        "kind": "本轮实际业务试用",
+        "title": "三名本地成员的正常与异常办理记录",
+        "detail": "代理模拟三名本地成员，实际操作桌面/手机界面并检查保存结果；部分权限与非法状态分支直接请求当前运行接口；网络故障由浏览器自动化注入。不是客户访谈或生产试点。",
+        "path": "outputs/broad-trial/实际办理记录.json"
+      },
+      {
+        "id": "E10",
+        "kind": "本轮隔离回归",
+        "title": "功能、权限和任务地图引用一致性",
+        "detail": "后端隔离回归和前端构建；通过测试不等于已经修复本轮发现的问题。",
+        "path": "outputs/broad-trial/后端检查.txt"
+      },
+      {
+        "id": "E11",
+        "kind": "已复现、尚待修复",
+        "title": "受理草稿、旧确认重用、订单误关联和过时文案",
+        "detail": "记录触发操作、实际结果、期望结果及关联任务。本轮只补地图与评估，业务缺陷未宣称修复。",
+        "path": "outputs/broad-trial/待修复问题.json"
+      },
+      {
+        "id": "E12",
+        "kind": "既有功能验收与本轮复验",
+        "title": "原文中文译文、指定回复译稿与交接独立责任",
+        "detail": "原文译文持久化、来源核对、交接逐项选择已实现；本轮再次走通列明分支。",
+        "path": "outputs/review-translation/实际验证.json"
+      },
+      {
+        "id": "E13",
+        "kind": "明确标准的隔离回归与真实模型复跑",
+        "title": "13组助手任务验收",
+        "detail": "通过仅指列明的隔离软件约束；真实模型回答单独复跑并保留观察结果。既有G01—G04仍待修复，未据此上调整条业务流程覆盖。",
+        "path": "outputs/assistant-acceptance/验收用例与回归结果.html"
+      }
+    ],
+    "metrics": [
+      {
+        "name": "材料反复追补次数",
+        "definition": "每个事项明确发起的追补轮次；不以备注条数代替",
+        "baseline": "已具备本地记录，真实业务基线待采集",
+        "target": "业务试用后确定",
+        "story_ids": [
+          "N02",
+          "N03"
+        ]
+      },
+      {
+        "name": "客户结果完整性",
+        "definition": "有客户结果类别、反馈时间、来源及录入人；无法联系与确认解决分开",
+        "baseline": "已有独立字段与历史，待积累真实业务样本",
+        "target": "业务试用后确定",
+        "story_ids": [
+          "N01"
+        ]
+      },
+      {
+        "name": "知识回查完成情况",
+        "definition": "按明确关联事项计算待回查、已回查、不适用，并记录版本",
+        "baseline": "已具备本地记录，真实业务基线待采集",
+        "target": "业务试用后确定",
+        "story_ids": [
+          "N04"
+        ]
+      },
+      {
+        "name": "交接等待时间",
+        "definition": "从发起交接至接受/退回；进行中事项单列，不与处理耗时混用",
+        "baseline": "已有时间记录，尚未汇总",
+        "target": "业务试用后确定",
+        "story_ids": [
+          "B05",
+          "N09"
+        ]
+      }
+    ],
+    "research_queue": [
+      {
+        "question": "什么情况可以内部结案？客户不回复多久、经过几次联系后如何退出？",
+        "decision": "N01结果分类及退出规则",
+        "owner": "客服主管（待指定）"
+      },
+      {
+        "question": "缺件/质量问题分别要求哪些材料，谁能豁免？附件如何保留？",
+        "decision": "N02/N03清单模板、访问与保留规则",
+        "owner": "售后负责人（待指定）"
+      },
+      {
+        "question": "规则生效后哪些事项必须回查？已结案事项是否需要重新联系？",
+        "decision": "N04影响范围与回查责任",
+        "owner": "知识维护与客服主管（待指定）"
+      },
+      {
+        "question": "以什么标识确认同一客户？渠道和身份系统是哪一个？",
+        "decision": "N07与RG接入边界",
+        "owner": "业务系统负责人（待指定）"
+      }
+    ],
+    "changes": [
+      "保留31项业务任务；扩展为13个典型场景、28条需求故事和19条流程。",
+      "补充外语评价、凭证失效、并发编辑、交接中变化、重开再确认、响应丢失、受理误关联、缺口恢复合并。",
+      "C06/C16/C18明确保留待修复分支；本轮不改写业务功能来掩盖试用结果。"
+    ],
+    "task_groups": [
+      {
+        "id": "G01",
+        "activity_id": "A01",
+        "title": "明确协作与访问范围",
+        "task_ids": [
+          "T12",
+          "F12"
+        ],
+        "story_ids": [
+          "B01",
+          "P03"
+        ]
+      },
+      {
+        "id": "G02",
+        "activity_id": "A01",
+        "title": "确定本班处理顺序",
+        "task_ids": [
+          "T01"
+        ],
+        "story_ids": [
+          "B01"
+        ]
+      },
+      {
+        "id": "G03",
+        "activity_id": "A02",
+        "title": "识别问题并找到关联记录",
+        "task_ids": [
+          "T02",
+          "F04",
+          "F08"
+        ],
+        "story_ids": [
+          "B02",
+          "N06",
+          "N07",
+          "N16"
+        ]
+      },
+      {
+        "id": "G04",
+        "activity_id": "A02",
+        "title": "核实事实与所需材料",
+        "task_ids": [
+          "T03",
+          "T04",
+          "F03",
+          "F09"
+        ],
+        "story_ids": [
+          "B02",
+          "N02",
+          "N03",
+          "N10",
+          "N14",
+          "N16"
+        ]
+      },
+      {
+        "id": "G05",
+        "activity_id": "A03",
+        "title": "准备可核对的答复",
+        "task_ids": [
+          "T05",
+          "T06",
+          "F06"
+        ],
+        "story_ids": [
+          "B03",
+          "B04",
+          "N11",
+          "N15"
+        ]
+      },
+      {
+        "id": "G06",
+        "activity_id": "A03",
+        "title": "交付答复并保存修订",
+        "task_ids": [
+          "T07",
+          "F01"
+        ],
+        "story_ids": [
+          "B03",
+          "P01",
+          "N11"
+        ]
+      },
+      {
+        "id": "G07",
+        "activity_id": "A04",
+        "title": "分配、交接并继续跟进",
+        "task_ids": [
+          "T08",
+          "T09",
+          "T13",
+          "F07"
+        ],
+        "story_ids": [
+          "B05",
+          "N12"
+        ]
+      },
+      {
+        "id": "G08",
+        "activity_id": "A04",
+        "title": "执行方案并管理承诺",
+        "task_ids": [
+          "F02",
+          "F11"
+        ],
+        "story_ids": [
+          "N08",
+          "P02"
+        ]
+      },
+      {
+        "id": "G09",
+        "activity_id": "A05",
+        "title": "核实结果并决定结案",
+        "task_ids": [
+          "T10",
+          "F05"
+        ],
+        "story_ids": [
+          "B06",
+          "N01",
+          "N13"
+        ]
+      },
+      {
+        "id": "G10",
+        "activity_id": "A05",
+        "title": "继续处理原问题",
+        "task_ids": [
+          "T11"
+        ],
+        "story_ids": [
+          "B06",
+          "N13"
+        ]
+      },
+      {
+        "id": "G11",
+        "activity_id": "A06",
+        "title": "维护知识并推动事项回查",
+        "task_ids": [
+          "T15",
+          "T16",
+          "T17",
+          "F10",
+          "F14"
+        ],
+        "story_ids": [
+          "B07",
+          "N04",
+          "N05",
+          "N17"
+        ]
+      },
+      {
+        "id": "G12",
+        "activity_id": "A06",
+        "title": "根据结果复盘改进",
+        "task_ids": [
+          "T14",
+          "F13"
+        ],
+        "story_ids": [
+          "B08",
+          "N09"
+        ]
+      }
+    ],
+    "latest_trial": {
+      "date": "2026-10-27",
+      "method": "代理模拟三名本地成员，实际操作桌面/手机界面并检查保存结果；部分权限与非法状态分支直接请求当前运行接口；网络故障由浏览器自动化注入。不是客户访谈或生产试点。",
+      "checks": [
+        {
+          "id": "A01",
+          "name": "从评价再次受理返回原事项，不重复创建",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "A02",
+          "name": "原文与中文译文对照，保留数量差异和机器翻译标签",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "A04",
+          "name": "错误订单关联被拒绝，原关联不被改写",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "B01",
+          "name": "手写回复切换事项、刷新均能恢复，且没有自动保存为已采用",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "B02",
+          "name": "采用后修订另建草稿，原采用版本和正文保持不变",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "B03",
+          "name": "内部备注保留尖括号原文并防止脚本执行，不误记成客户原话",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "B04",
+          "name": "回复并发修改拒绝覆盖新版，甲未提交文字仍保留",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "C01",
+          "name": "必要材料建立为待收集，有负责人和期限",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "C02",
+          "name": "伪装为PNG的文本被拒绝，不产生假凭证记录",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "C03",
+          "name": "有效原始凭证保存后仅变成已收到，未自动核验",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "C04",
+          "name": "人工核验与原文件预览可独立完成",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "C05",
+          "name": "非成员直接请求凭证被服务端拒绝",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "C06",
+          "name": "归档保留原文件并使材料重新待核验，历史可查看",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "C07",
+          "name": "凭证归档后必要材料重新阻止结案",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "D01",
+          "name": "未来反馈时间被拒绝，不保存虚假的客户结果",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "D02",
+          "name": "无法联系形成独立跟进，不等于确认解决",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "D03",
+          "name": "客户结果并发更正保留两人意图，重读后明确提示冲突",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "D04",
+          "name": "可明确放弃旧草稿并使用同事当前记录",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "E01",
+          "name": "发起交接前逐项确认独立责任，接受前原工单负责人持续负责",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "E02",
+          "name": "非候选人接受和交接未完成时结案均被阻止",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "E03",
+          "name": "交接发起后材料改变会提示重核并拒绝旧清单接受",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "E04",
+          "name": "退回后重新发起可成功接手，材料移交、回访保留分别生效",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "E05",
+          "name": "接班人默认待办匹配真实独立责任，没有把保留的回访误转过去",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "F01",
+          "name": "已记录实际反馈后可以按客户确认完成内部结案",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "H01",
+          "name": "缺口可以更正原题并分派，保留来源事项",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "H02",
+          "name": "误登记缺口可带原因撤销，不会连带关闭客户事项",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "H03",
+          "name": "缺口可恢复再合并，主记录关联双方来源事项而非删除原记录",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "H04",
+          "name": "自合并被拒绝；没有为了试用发布新的业务规则",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "I01",
+          "name": "工单过期版本不会覆盖新版，刷新后保留草稿并提示核对",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "I02",
+          "name": "服务概况说明累计口径，未把采用回复数量当作客户解决率",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "I03",
+          "name": "390像素手机可查看接班后的独立材料待办，无水平溢出",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "I04",
+          "name": "非成员和缺少共享范围的直接访问均被拒绝",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "I05",
+          "name": "记录尚无完整流程的边界，未把累计概况、只读订单当作正式业务接入",
+          "status": "passed",
+          "method": "interface-review"
+        },
+        {
+          "id": "Z01",
+          "name": "独立试用过程中未出现浏览器脚本异常",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "F02",
+          "name": "已结案事项录入新客户原话后自动重开原工单，保留历史",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "L01",
+          "name": "误建材料可以带原因撤回，归档附件和历史不删除",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "L02",
+          "name": "相同评价在不同协作范围独立受理，不能用错误空间直接读取原事项",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "L03",
+          "name": "跨来源误关联试用后已恢复原订单；原始只读订单与评价未改写",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "K01",
+          "name": "服务端已完成但浏览器丢失响应时，恢复结果不重复保存输入或参考",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "K02",
+          "name": "客服参考即使直接请求接口也不能当作客户回复采用",
+          "status": "passed",
+          "method": "live-api"
+        },
+        {
+          "id": "K03",
+          "name": "翻译读取中断时原评价仍可读，原位重试恢复已保存译文",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "K04",
+          "name": "同事修改原稿后采用旧译稿被阻止，译稿和来源快照保留",
+          "status": "passed",
+          "method": "browser"
+        },
+        {
+          "id": "M01",
+          "name": "通过真实界面复现订单误关联，记录后已用界面恢复原订单",
+          "status": "passed",
+          "method": "browser"
+        }
+      ],
+      "issues": [
+        {
+          "id": "G01",
+          "priority": "P2",
+          "title": "受理信息弹窗关闭后丢失未提交内容",
+          "steps": [
+            "填写涉及数量和客户期望结果",
+            "关闭弹窗",
+            "再次打开补齐受理信息"
+          ],
+          "observed": "字段恢复为空白",
+          "expected": "保留未提交内容，或关闭前明确提示放弃",
+          "tasks": [
+            "T02",
+            "T06"
+          ],
+          "state": "已复现，待修复"
+        },
+        {
+          "id": "G02",
+          "priority": "P3",
+          "title": "受理表单仍提示图片附件待实现",
+          "steps": [
+            "打开补齐受理信息",
+            "查看材料与证据说明占位文案"
+          ],
+          "observed": "写着“图片附件接入仍待实现”，但右侧已有原始凭证上传",
+          "expected": "说明可在材料追补中上传凭证，并提供明确入口",
+          "tasks": [
+            "T02",
+            "F03"
+          ],
+          "state": "已复现，待修复"
+        },
+        {
+          "id": "G03",
+          "priority": "P1",
+          "title": "重开后旧客户确认仍被当作本次有效结果",
+          "steps": [
+            "记录客户确认解决并结案",
+            "录入同一问题再次出现的客户原话",
+            "查看客户结果与结案安排"
+          ],
+          "observed": {
+            "customer_result": {
+              "status": "confirmed",
+              "occurred_at": "2026-10-27T08:16:00Z",
+              "note": "独立试用：模拟上一次问题已由客户确认解决",
+              "owner": "",
+              "next_action": "",
+              "due_at": null,
+              "source": "manual",
+              "recorded_by": "broad-1793088996668",
+              "recorded_at": "2026-10-27T08:16:47.245131+00:00"
+            },
+            "case_status": "pending",
+            "reclose_accepted": true
+          },
+          "expected": "旧确认保留为历史，本轮需要重新确认；不能直接复用旧确认结案",
+          "tasks": [
+            "T11",
+            "F05",
+            "T10"
+          ],
+          "state": "已复现，待修复"
+        },
+        {
+          "id": "G04",
+          "priority": "P2",
+          "title": "改关联订单后仍展示原评价而缺少不一致提醒",
+          "steps": [
+            "打开少件历史评价事项",
+            "把关联订单改成另一条缺货订单",
+            "查看原评价、关联订单和来源标记"
+          ],
+          "observed": {
+            "review_order": "9bdc4d4c71aa1de4606060929dee888c",
+            "current_order": "3971a8d658593643c85790cb67105832",
+            "ui_order": "3971a8d658593643c85790cb67105832",
+            "ui_still_shows_original": "客户评价原文\n10/27 16:16\n评价记录创建：2018-03-02 00:00:00\n客户评价作答：2018-03-03 00:44:54 · 原始时间，未转换时区；消息右上角为本地受理时间。\n\nComprei 14 unidades e recebi somente 9. Ainda não foi resolvida a questão.\n\n收起中文译文\n客户评价 · 中文译文\n\n我买了14件，只收到9件。问题还没有得到解决。\n\n机器翻译 · 仅帮助理解客户原意，请对照上方葡萄牙语原文核对。译文已保存，下次可直接查看。",
+            "current_notice": [
+              "已关联本地只读历史订单×"
+            ]
+          },
+          "expected": "提示原评价订单与当前关联订单不同，要求说明更改原因并持续显示差异",
+          "tasks": [
+            "T02",
+            "T03"
+          ],
+          "state": "已复现，待修复"
+        }
+      ],
+      "report": "outputs/broad-trial/详细业务试用评估.html",
+      "limitations": [
+        "未接入或操作真实消息发送、退款、补发和企业认证。",
+        "本轮未修改或发布现有业务知识文档；知识审核/版本失效继续引用隔离回归证据。",
+        "没有真实客服使用频率、满意度或业务效果数据；覆盖状态只描述列明的本地流程。"
+      ],
+      "journeys": 11
+    },
+    "assistant_acceptance": {
+      "title": "助手任务验收 · 13组",
+      "date": "2026-10-27",
+      "version": "1.0",
+      "spec_sha256": "fbced5302c2a289740192d3881036c7dd6017a49456f4742f909a59daf508655",
+      "scope": "通过仅指列明的隔离软件约束；真实模型回答单独复跑并保留观察结果。既有G01—G04仍待修复，未据此上调整条业务流程覆盖。",
+      "baseline_passed": 4,
+      "after_passed": 13,
+      "report": "outputs/assistant-acceptance/验收用例与回归结果.html",
+      "cases": [
+        {
+          "id": "A01",
+          "title": "复合问题识别",
+          "given": "明确存在资金和技术两个当前问题",
+          "input": "重复扣款＋页面401＋崩溃",
+          "expected": "识别两类问题并按当前协作设计分派；处理结果均保留",
+          "forbidden": "遗漏任一问题；仅因格式变化少派Agent",
+          "reason": "避免遗漏另一类客户诉求",
+          "task_ids": [
+            "T05"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "R01：页面401被识别；资金与技术两个Agent都返回，按职责分段；练习假设和资金规则缺口明确标出。"
+        },
+        {
+          "id": "A02",
+          "title": "客服练习连续追问",
+          "given": "同一会话先有客服假设练习",
+          "input": "继续假设登录恢复、资金未确认",
+          "expected": "可追溯前次客服输入，明确不是客户事实；不包含内部备注或未采用回复",
+          "forbidden": "假设变为客户事实；无依据说此前未提及登录",
+          "reason": "既能继续练习，又不污染事实",
+          "task_ids": [
+            "T05",
+            "T06"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "R02：记住前轮登录问题，按新增假设更新为恢复；资金仍待核实，不登记为客户实际结果。"
+        },
+        {
+          "id": "A03",
+          "title": "有来源的退款解释",
+          "given": "test模式有明确的已发货退款资料",
+          "input": "区分退货、申请审核与到账",
+          "expected": "传递适用原文及版本，结果保留引用；真实模型输出另行人工对照",
+          "forbidden": "测试规则当正式政策；声称已执行退款",
+          "reason": "规则解释必须可追溯",
+          "task_ids": [
+            "T05",
+            "T17"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "passed",
+          "after": "passed",
+          "live": "L03：引用退款政策v1，区分退货、审核和到账，明确测试模式和未执行退款。"
+        },
+        {
+          "id": "A04",
+          "title": "无适用知识",
+          "given": "跨境税费、汇率损失和三倍赔偿均无来源",
+          "input": "一次询问三类规则",
+          "expected": "逐项列出缺口与应补资料；不调用无依据的回复Agent",
+          "forbidden": "编造结论；仅返回不相关签收提醒",
+          "reason": "用户需知道具体缺什么规则",
+          "task_ids": [
+            "T15"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "R04：三项跨境规则逐项列缺口与资料要求；即使曾召回一般退款规则，也未执行回复Agent。"
+        },
+        {
+          "id": "A05",
+          "title": "协作输出整合",
+          "given": "两类Agent都正常返回",
+          "input": "资金和技术联合处理",
+          "expected": "每个Agent只负责自己的领域；形成一份分段方案，成果只出现一次",
+          "forbidden": "两份全文重复拼接；辅助Agent代替资金规则判断",
+          "reason": "多Agent要提高完整性而非增加重复",
+          "task_ids": [
+            "T05"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "R01：页面401被识别；资金与技术两个Agent都返回，按职责分段；练习假设和资金规则缺口明确标出。"
+        },
+        {
+          "id": "A06",
+          "title": "错误码表达变体",
+          "given": "同一401故障换六种写法",
+          "input": "页面401、401错误、HTTP 401、错误码401、E401等",
+          "expected": "识别语义等价错误码；不把订单号、电话、金额当错误码",
+          "forbidden": "中文边界漏提取；数字误报",
+          "reason": "排除格式偶然性与过度识别",
+          "task_ids": [
+            "T05"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "R01：页面401被识别；资金与技术两个Agent都返回，按职责分段；练习假设和资金规则缺口明确标出。 其余错误码变体为隔离检查。"
+        },
+        {
+          "id": "A07",
+          "title": "单领域与否定提及",
+          "given": "只有技术或资金问题；另有明确否定的领域",
+          "input": "只问登录／只问扣款／不涉及资金",
+          "expected": "只派相关Agent；否定部分不触发无关协作",
+          "forbidden": "不必要调用；将不涉及的领域当诉求",
+          "reason": "避免为了多Agent展示而额外调用",
+          "task_ids": [
+            "T05"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "passed",
+          "after": "passed",
+          "live": "本轮以隔离回归验证；未在实际服务注入故障或改动真实知识版本。"
+        },
+        {
+          "id": "A08",
+          "title": "客户纠正",
+          "given": "上一条自述为重复扣款",
+          "input": "更正：不是重复扣款，是支付失败",
+          "expected": "当前问题随最新客户原话更新；旧原话与来源仍保留",
+          "forbidden": "继续沿用被客户撤回的当前判断",
+          "reason": "纠正优先于过时记忆",
+          "task_ids": [
+            "T05"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "L08：怀疑重复扣款仍标记为待核实，说明缺少流水及适用规则，没有承诺退款。；L09：当前诉求更新为支付失败，不继续沿用重复扣款处理缺口。"
+        },
+        {
+          "id": "A09",
+          "title": "三轮客户状态更新",
+          "given": "同一模拟客户会话连续三轮补充",
+          "input": "登录恢复→交易均成功→分别对应不同订单",
+          "expected": "提取最新自述状态及来源；资金/技术分别更新；不自动确认结案",
+          "forbidden": "把自述当核验结论；旧故障当持续存在",
+          "reason": "记忆需要更新且不越过核验边界",
+          "task_ids": [
+            "T05",
+            "F05"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "L05：真实模型处理两类模拟客户问题，保留两个领域的证据与不确定性。；L06：未命中知识时仍准确表达登录已恢复、资金待核实；没有返回泛化签收提示。；L07：保留登录恢复状态，按最新自述更新为不同订单；不自动确认结案。"
+        },
+        {
+          "id": "A10",
+          "title": "客服假设隔离",
+          "given": "客户原话仍为退款待核对",
+          "input": "客服假设已经收到退款",
+          "expected": "客服操作可讨论但不写进客户事实，不改变客户结果",
+          "forbidden": "虚构客户已收款或已确认解决",
+          "reason": "避免假设触发错误业务状态",
+          "task_ids": [
+            "T05",
+            "F05"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "passed",
+          "after": "passed",
+          "live": "R02：记住前轮登录问题，按新增假设更新为恢复；资金仍待核实，不登记为客户实际结果。 “假设已收款”变体为隔离检查。"
+        },
+        {
+          "id": "A11",
+          "title": "部分问题有知识",
+          "given": "退款环节有来源，税费汇率无来源",
+          "input": "退款步骤＋税费是否退＋汇率损失",
+          "expected": "已知部分可引用；未知部分逐项标记并传入模型约束",
+          "forbidden": "用退款规则推断税费、汇率责任",
+          "reason": "一个命中不能证明所有子问题有依据",
+          "task_ids": [
+            "T05",
+            "T15"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "R11：退款环节引用v1；进口税与汇率损失明确无依据；没有自行补齐退货与审核的完整顺序。"
+        },
+        {
+          "id": "A12",
+          "title": "来源失效",
+          "given": "召回中混入旧版及已归档规则",
+          "input": "包含旧版、归档及当前版本的候选",
+          "expected": "过滤旧版和归档，只保留当前适用版本",
+          "forbidden": "使用失效文档或缓存绕过版本检查",
+          "reason": "版本变化后依然有正确依据",
+          "task_ids": [
+            "T17"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "passed",
+          "after": "passed",
+          "live": "本轮以隔离回归验证；未在实际服务注入故障或改动真实知识版本。"
+        },
+        {
+          "id": "A13",
+          "title": "Agent部分失败或超时",
+          "given": "一方正常，另一方失败或超时",
+          "input": "故障注入，不连接真实用户或业务平台",
+          "expected": "保留成功部分；标明未完成/降级；监控不能计为全部完成",
+          "forbidden": "静默丢失失败分支；假称完整成功",
+          "reason": "执行状态需如实反映业务剩余工作",
+          "task_ids": [
+            "T05",
+            "F06"
+          ],
+          "method": "临时数据库＋受控Agent；包括API、路由、上下文、来源过滤或失败注入",
+          "baseline": "failed",
+          "after": "passed",
+          "live": "本轮以隔离回归验证；未在实际服务注入故障或改动真实知识版本。"
+        }
+      ],
+      "live_summary": "10项代表性服务流程复跑，并追加4项针对性复验；无依据分支包含不调用回复Agent的情况。"
+    }
+  }
+}
