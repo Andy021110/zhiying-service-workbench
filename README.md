@@ -6,7 +6,7 @@
 
 [浏览产品案例](http://47.76.25.13/portfolio/zhiying.html) · [用户任务地图](docs/task-map.json) · [架构说明](docs/architecture.md) · [验收与已知问题](docs/acceptance.md) · [本地运行](#本地运行)
 
-> 项目定位：基于既有 EchoMind Python / Vue 工程持续改造的本地产品原型。本人主导问题定义、产品取舍与反馈，使用 AI 辅助实现、走查与文档整理。尚未完成真实客服访谈、生产接入或外部用户效果验证。完整工程暂以私有仓库保存，原工程来源与许可边界见 [NOTICE](NOTICE.md)。
+> 项目定位：基于既有 EchoMind Python / Vue 工程持续改造的本地产品原型。本人主导问题定义、产品取舍与反馈，使用 AI 辅助实现、走查与文档整理。尚未完成真实客服访谈、生产接入或外部用户效果验证。完整工程已公开到 GitHub，原工程来源与许可边界见 [NOTICE](NOTICE.md)。
 
 ![知应实际运行界面：完整项目示例](docs/images/examples.png)
 
