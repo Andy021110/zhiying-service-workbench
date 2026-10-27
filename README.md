@@ -170,7 +170,7 @@ redis-server --bind 127.0.0.1 --port 6387 --protected-mode yes \
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.local.lock.txt
 cp .env.example .env
 # 编辑 .env，填写自己的模型 API Key、兼容接口地址与模型名称。
 # 嵌入配置留空时使用 Chroma 默认本地模型；与已有集合维度必须一致。
