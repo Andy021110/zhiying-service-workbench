@@ -1,0 +1,434 @@
+{
+  "repo": "https://github.com/Andy021110/zhiying-service-workbench",
+  "lanes": [
+    "工作台与业务状态",
+    "事实与答复依据",
+    "处理与协作",
+    "结果与持久记录"
+  ],
+  "nodes": [
+    {
+      "id": "ui",
+      "lane": 0,
+      "title": "Vue 工作台",
+      "subtitle": "客户原话 / 客服操作",
+      "description": "把原话、操作指令、手写回复和内部备注区分录入，承接事项进度与待办。",
+      "input": "客服选择的事项与输入类型。",
+      "output": "带事项上下文的业务请求。",
+      "boundary": "客户自述不是已核实事实；本地采用不是对外发送。",
+      "files": [
+        "frontend/src/App.vue",
+        "frontend/src/components/ReplyProcessing.vue"
+      ]
+    },
+    {
+      "id": "api",
+      "lane": 0,
+      "title": "FastAPI 接口",
+      "subtitle": "受理 / 生成 / 跟进",
+      "description": "接收工作台请求，组织事实、回复和业务办理的不同入口。",
+      "input": "事项标识、用户范围、输入内容。",
+      "output": "经过业务检查的处理结果。",
+      "boundary": "服务暂不可用要保留输入并明确重试；不能把失败写成完成。",
+      "files": [
+        "backend/api/main.py",
+        "backend/api/workbench_routes.py"
+      ]
+    },
+    {
+      "id": "state",
+      "lane": 0,
+      "title": "范围与版本",
+      "subtitle": "事项归属 / 冲突检查",
+      "description": "验证当前工作范围和记录版本，让保存、交接、采用与结案按各自条件执行。",
+      "input": "用户范围、事项、当前版本。",
+      "output": "允许的修改，或明确的版本冲突。",
+      "boundary": "本地用户切换用于协作演练，尚不是企业身份系统。",
+      "files": [
+        "backend/core/workbench.py",
+        "backend/core/handoff_tasks.py"
+      ]
+    },
+    {
+      "id": "facts",
+      "lane": 1,
+      "title": "只读订单事实",
+      "subtitle": "明确事实直接查询",
+      "description": "识别纯订单事实问题，直接读取可核对的只读记录，避免为了回答已有事实启动回复 Agent。",
+      "input": "明确订单标识及时间、状态等事实问题。",
+      "output": "来源明确的订单信息。",
+      "boundary": "历史 Olist 是 2016—2018 年数据；事实查询不代表有退款政策。",
+      "files": [
+        "backend/core/fact_answers.py",
+        "backend/core/olist_import.py"
+      ]
+    },
+    {
+      "id": "gate",
+      "lane": 1,
+      "title": "当前问题判断",
+      "subtitle": "历史上下文 / 意图",
+      "description": "结合最新输入和上下文判断仍需处理的事项；故障恢复与再次复发会改变领域分派。",
+      "input": "最新客户问题和已有对话背景。",
+      "output": "当前问题、领域和待补信息。",
+      "boundary": "不能只因旧对话出现故障词，就继续分派技术支持。",
+      "files": [
+        "backend/core/conversation_context.py",
+        "backend/core/intent_recognizer.py"
+      ]
+    },
+    {
+      "id": "knowledge",
+      "lane": 1,
+      "title": "知识可用性",
+      "subtitle": "范围 / 审核 / 生效版本",
+      "description": "业务答复先核对可用知识。检索结果还要经过范围、审核和版本判断。",
+      "input": "适用范围、知识模式、已有材料与版本。",
+      "output": "可用依据，或缺失规则清单。",
+      "boundary": "演示规则不自动成为企业政策；存在文档不等于当前可用。",
+      "files": [
+        "backend/core/knowledge_policy.py",
+        "backend/mcp/knowledge_base.py",
+        "backend/mcp/tool_manager.py"
+      ]
+    },
+    {
+      "id": "agents",
+      "lane": 2,
+      "title": "领域 Agent",
+      "subtitle": "通用 / 技术 / 账单",
+      "description": "按当前问题选择领域；复合问题可以由技术与账单分别处理，再合并草稿。",
+      "input": "已判断的问题、上下文与允许使用的资料。",
+      "output": "带执行状态的领域答复和草稿。",
+      "boundary": "执行返回不等于内容正确；AR02、AR03 仍保留内容反例。",
+      "files": [
+        "backend/agents/agent_orchestrator.py",
+        "backend/core/assistant_quality.py"
+      ]
+    },
+    {
+      "id": "gap",
+      "lane": 2,
+      "title": "知识缺口",
+      "subtitle": "列条件 / 补资料",
+      "description": "没有适用政策时明确说明缺口，保留材料和后续待办，等待补齐与复核。",
+      "input": "无法确认的政策或必需材料。",
+      "output": "待补信息、缺口记录与下一步。",
+      "boundary": "不能用默认退款比例或无依据承诺填满答复。",
+      "files": [
+        "backend/core/knowledge_policy.py",
+        "backend/api/operations_routes.py",
+        "frontend/src/components/KnowledgeGapPanel.vue"
+      ]
+    },
+    {
+      "id": "memory",
+      "lane": 2,
+      "title": "上下文与检索存储",
+      "subtitle": "Redis / ChromaDB",
+      "description": "Redis 提供工作记忆，ChromaDB 提供向量检索与长期记忆；供相关处理链路使用。",
+      "input": "会话上下文、可检索知识或记忆。",
+      "output": "可供处理使用的上下文与召回内容。",
+      "boundary": "不能替代 SQLite 的业务状态；合成示例可能使用隔离规则而不经过检索工具。",
+      "files": [
+        "backend/memory/conversation_memory.py",
+        "backend/mcp/knowledge_base.py"
+      ]
+    },
+    {
+      "id": "draft",
+      "lane": 3,
+      "title": "回复草稿",
+      "subtitle": "客服核对 / 修订",
+      "description": "展示草稿、来源与处理记录，供客服核查和修改后本地采用。",
+      "input": "领域答复，或直接查询的事实答案。",
+      "output": "可核对的草稿与采用记录。",
+      "boundary": "没有真实渠道发送能力；草稿也不代表客户确认解决。",
+      "files": [
+        "backend/core/assistant_outputs.py",
+        "backend/core/customer_reply.py",
+        "frontend/src/components/MarkdownContent.vue"
+      ]
+    },
+    {
+      "id": "workflow",
+      "lane": 3,
+      "title": "后续业务流程",
+      "subtitle": "待办 / 交接 / 结案",
+      "description": "把下一步、负责人、材料、审批和客户结果接到事项中。",
+      "input": "客服核对后的操作、材料和结果确认。",
+      "output": "明确的待办、交接和当前轮次结果。",
+      "boundary": "内部完成、审批通过、客户确认分别记录；重开不能复用旧轮次确认。",
+      "files": [
+        "backend/core/service_followup.py",
+        "backend/core/operations.py",
+        "backend/core/closure_plans.py"
+      ]
+    },
+    {
+      "id": "db",
+      "lane": 3,
+      "title": "SQLite 业务记录",
+      "subtitle": "会话 / 工单 / 来源",
+      "description": "持久保存业务事实、消息、材料、审批与执行记录，提供后续接班的依据。",
+      "input": "通过业务检查的记录与状态变化。",
+      "output": "可继续处理和核对的本地事项。",
+      "boundary": "保存成功不是已经执行退款或修改真实订单。",
+      "files": [
+        "backend/core/workbench.py",
+        "backend/core/execution_calls.py"
+      ]
+    },
+    {
+      "id": "trace",
+      "lane": 3,
+      "title": "执行与运行监控",
+      "subtitle": "累计 / 本次启动",
+      "description": "在实际执行边界记录状态，区分跨重启的累计记录和本次服务启动的统计。",
+      "input": "已采集的助手执行、Agent 与工具状态。",
+      "output": "执行明细、耗时与统计。",
+      "boundary": "一次助手执行可能含多个请求；工具发现、缓存和模型调用不能混算。",
+      "files": [
+        "backend/core/execution_calls.py",
+        "backend/monitor/performance_monitor.py",
+        "frontend/src/components/MonitorPanel.vue"
+      ]
+    }
+  ],
+  "edges": [
+    [
+      "ui",
+      "api"
+    ],
+    [
+      "api",
+      "state"
+    ],
+    [
+      "state",
+      "gate"
+    ],
+    [
+      "state",
+      "facts"
+    ],
+    [
+      "gate",
+      "knowledge"
+    ],
+    [
+      "knowledge",
+      "agents"
+    ],
+    [
+      "knowledge",
+      "gap"
+    ],
+    [
+      "agents",
+      "draft"
+    ],
+    [
+      "draft",
+      "workflow"
+    ],
+    [
+      "workflow",
+      "db"
+    ],
+    [
+      "db",
+      "trace"
+    ],
+    [
+      "facts",
+      "draft"
+    ],
+    [
+      "gap",
+      "workflow"
+    ]
+  ],
+  "scenarios": [
+    {
+      "id": "compound",
+      "title": "复合投诉：技术故障与重复扣款",
+      "kind": "界面验收情境 · 保留反例",
+      "question": "客户再次无法登录，页面 401、应用崩溃，同时同一订单疑似重复扣款，需要分别处理。",
+      "evidence": "2026.10.27 AR03：领域执行完成，内容检查未通过。",
+      "evidenceUrl": "https://github.com/Andy021110/zhiying-service-workbench/blob/main/docs/acceptance.md",
+      "steps": [
+        {
+          "node": "ui",
+          "note": "录入最新客户原话，保留复发与扣款尚未核实的条件。"
+        },
+        {
+          "node": "api",
+          "note": "请求进入回复准备入口。"
+        },
+        {
+          "node": "state",
+          "note": "核对当前事项与可操作范围。"
+        },
+        {
+          "node": "gate",
+          "note": "按当前复发状态识别技术和账单两个领域。"
+        },
+        {
+          "node": "knowledge",
+          "note": "保留可用测试资料的适用边界，缺失规则保持待确认。"
+        },
+        {
+          "node": "agents",
+          "note": "技术与账单分别执行；这里汇总领域编排，不表示只有一次模型请求。"
+        },
+        {
+          "node": "draft",
+          "note": "返回联合草稿后必须核对：当时出现了无依据的 301 与退款方式。"
+        },
+        {
+          "node": "workflow",
+          "note": "说明后续核对与责任；不能因生成完成就结案。"
+        },
+        {
+          "node": "db",
+          "note": "保存当前事项与采用状态，便于后续接班。"
+        },
+        {
+          "node": "trace",
+          "note": "核对执行是否发生，并与内容检查结论分别查看。"
+        }
+      ]
+    },
+    {
+      "id": "recovered",
+      "title": "故障已恢复：只处理资金问题",
+      "kind": "修复后界面复验",
+      "question": "客户明确说登录已恢复、应用不再崩溃，但重复扣款仍待核对。",
+      "evidence": "2026.10.27：曾多派技术，修复后仅账单执行。",
+      "evidenceUrl": "https://github.com/Andy021110/zhiying-service-workbench/blob/main/docs/acceptance.md",
+      "steps": [
+        {
+          "node": "ui",
+          "note": "录入客户对恢复状态的明确说明。"
+        },
+        {
+          "node": "api",
+          "note": "按最新输入继续原事项。"
+        },
+        {
+          "node": "state",
+          "note": "沿用当前事项范围，不覆盖旧处理历史。"
+        },
+        {
+          "node": "gate",
+          "note": "最新恢复状态覆盖旧故障词，只保留资金问题。"
+        },
+        {
+          "node": "knowledge",
+          "note": "区分已存在资料与尚未核实的扣款规则。"
+        },
+        {
+          "node": "agents",
+          "note": "只分派账单售后，避免再次执行技术排障。"
+        },
+        {
+          "node": "draft",
+          "note": "核对资金事实与待确认条件后采用草稿。"
+        },
+        {
+          "node": "workflow",
+          "note": "资金问题仍需继续跟进，不提前记录已解决。"
+        },
+        {
+          "node": "db",
+          "note": "保留本轮状态与旧轮次历史。"
+        },
+        {
+          "node": "trace",
+          "note": "查看领域执行记录，确认技术支持没有被再次分派。"
+        }
+      ]
+    },
+    {
+      "id": "facts",
+      "title": "查订单状态：不调用回复 Agent",
+      "kind": "事实查询分流",
+      "question": "只核对订单的发货时间、状态和时效，不要求生成政策答复。",
+      "evidence": "界面验收确认走事实链路；本图不发起真实查询。",
+      "evidenceUrl": "https://github.com/Andy021110/zhiying-service-workbench/blob/main/docs/acceptance.md",
+      "steps": [
+        {
+          "node": "ui",
+          "note": "选择已有订单并提出明确事实问题。"
+        },
+        {
+          "node": "api",
+          "note": "识别事实查询入口。"
+        },
+        {
+          "node": "state",
+          "note": "核对当前记录可访问范围。"
+        },
+        {
+          "node": "facts",
+          "note": "直接读取只读订单事实，跳过领域回复 Agent。"
+        },
+        {
+          "node": "draft",
+          "note": "展示来源明确的事实答案，不延伸退款承诺。"
+        },
+        {
+          "node": "workflow",
+          "note": "由客服决定下一步；查到状态不自动完成其他待办。"
+        },
+        {
+          "node": "db",
+          "note": "保留业务上下文，供后续继续处理。"
+        }
+      ]
+    },
+    {
+      "id": "missing-policy",
+      "title": "政策缺失：明确缺口，不生成承诺",
+      "kind": "知识可用性分流",
+      "question": "客户要求赔付或退款，但当前没有适用且生效的正式规则。",
+      "evidence": "缺少依据时返回缺口，不把默认字段伪装成 Agent 执行。",
+      "evidenceUrl": "https://github.com/Andy021110/zhiying-service-workbench/blob/main/docs/acceptance.md",
+      "steps": [
+        {
+          "node": "ui",
+          "note": "保留客户诉求与已有材料。"
+        },
+        {
+          "node": "api",
+          "note": "请求进入业务回复检查。"
+        },
+        {
+          "node": "state",
+          "note": "限定事项与知识使用范围。"
+        },
+        {
+          "node": "gate",
+          "note": "识别需要政策依据的诉求。"
+        },
+        {
+          "node": "knowledge",
+          "note": "没有找到适用的生效依据，停止进入领域答复。"
+        },
+        {
+          "node": "gap",
+          "note": "列出所缺政策与材料，不编造赔付比例。"
+        },
+        {
+          "node": "workflow",
+          "note": "建立补资料、核对或转交的下一步。"
+        },
+        {
+          "node": "db",
+          "note": "保存缺口与后续状态，便于重新核对。"
+        }
+      ]
+    }
+  ]
+}

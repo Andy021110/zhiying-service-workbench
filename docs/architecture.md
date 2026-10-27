@@ -1,5 +1,7 @@
 # 架构与关键边界
 
+[可交互架构图：切换场景、点选模块并查看对应实现](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)
+
 ## 请求怎样走过系统
 
 1. Vue 将客户原话、客服操作、手写回复与内部备注区分提交。

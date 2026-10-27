@@ -4,7 +4,7 @@
 
 知应是一个面向客服受理、回复准备、工单跟进与知识维护的个人改造项目。它将客户原话、只读订单、回复依据、材料、待办、审批和客户结果关联到同一事项，支持在已有背景上继续处理。
 
-[浏览产品案例](http://47.76.25.13/portfolio/zhiying.html) · [用户任务地图](docs/task-map.json) · [架构说明](docs/architecture.md) · [验收与已知问题](docs/acceptance.md) · [本地运行](#本地运行)
+[浏览产品案例](http://47.76.25.13/portfolio/zhiying.html) · [用户任务地图](docs/task-map.json) · [架构说明](docs/architecture.md) · [可交互架构图](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture) · [验收与已知问题](docs/acceptance.md) · [本地运行](#本地运行)
 
 > 项目定位：基于既有 EchoMind Python / Vue 工程持续改造的本地产品原型。本人主导问题定义、产品取舍与反馈，使用 AI 辅助实现、走查与文档整理。尚未完成真实客服访谈、生产接入或外部用户效果验证。完整工程已公开到 GitHub，原工程来源与许可边界见 [NOTICE](NOTICE.md)。
 
@@ -243,3 +243,7 @@ NOTICE.md          原工程、AI 协作与许可说明
 2. **真实业务研究：** 观察真实客服接班、材料追补与结案，修订角色、完成条件和任务优先级。
 3. **受控业务接入：** 企业登录、权限隔离、真实渠道回执与订单平台写操作按需接入，不把本地成员切换当成上线权限体系。
 4. **效果评估：** 有真实样本后再衡量漏跟进率、返工率、依据覆盖和客户确认完成情况；当前没有效率提升或成本节省结论。
+
+### 可交互架构导览
+
+[打开作品集交互架构图](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)：支持 4 个业务场景切换、模块输入输出与源码查看、逐步讲解和自动播放。图为只读架构说明，不发起模型请求；历史实跑与异常分支分别标注依据，不能将路径播放当作新的调用记录。网页源码位于 `showcase/assets/architecture/`。
