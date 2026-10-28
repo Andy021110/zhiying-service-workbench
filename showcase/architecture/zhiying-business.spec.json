@@ -1,0 +1,495 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "知应 · 事项办理、知识治理与持久状态",
+    "locale": "zh-CN",
+    "output": "zhiying-business.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Andy021110/zhiying-service-workbench.git",
+      "revision": "8df26f74a5ffce673695cc3534db78362e570ddd"
+    },
+    "views": [
+      {
+        "id": "handoff-path",
+        "label": "交接与跟进",
+        "focus": [
+          "workbench",
+          "scope",
+          "handoff",
+          "todo",
+          "approval",
+          "customer-result",
+          "reopen",
+          "records",
+          "sqlite"
+        ],
+        "note": "每轮客户结果与内部完成分别记录；重开不能复用旧轮次的确认。"
+      },
+      {
+        "id": "knowledge-life",
+        "label": "知识版本",
+        "focus": [
+          "workbench",
+          "scope",
+          "document",
+          "review",
+          "source",
+          "vector",
+          "records",
+          "sqlite"
+        ],
+        "note": "知识内容、审核版本、索引片段和被引用版本需要保持一致。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "workbench",
+      "type": "frontend",
+      "label": "客服与主管工作台",
+      "sublabel": "个人 / 协作范围",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "frontend/src/App.vue",
+          "line": 231,
+          "end_line": 255
+        }
+      ]
+    },
+    {
+      "id": "scope",
+      "type": "security",
+      "label": "范围与版本核对",
+      "sublabel": "所属事项 / 当前版本",
+      "pos": [
+        340,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/operations.py",
+          "line": 21,
+          "end_line": 47
+        },
+        {
+          "path": "backend/core/workbench.py",
+          "line": 80,
+          "end_line": 100
+        }
+      ]
+    },
+    {
+      "id": "handoff",
+      "type": "backend",
+      "label": "工单分派与交接",
+      "sublabel": "负责人 / 接受 / 退回",
+      "pos": [
+        640,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/operations.py",
+          "line": 146,
+          "end_line": 225
+        }
+      ]
+    },
+    {
+      "id": "todo",
+      "type": "backend",
+      "label": "材料与跟进待办",
+      "sublabel": "下一步 / 截止 / 责任",
+      "pos": [
+        940,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/handoff_tasks.py",
+          "line": 1,
+          "end_line": 43
+        },
+        {
+          "path": "backend/core/service_followup.py",
+          "line": 1,
+          "end_line": 45
+        }
+      ]
+    },
+    {
+      "id": "records",
+      "type": "backend",
+      "label": "业务记录写入",
+      "sublabel": "事务与记录版本",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/workbench.py",
+          "line": 17,
+          "end_line": 47
+        }
+      ]
+    },
+    {
+      "id": "adopt",
+      "type": "backend",
+      "label": "草稿核对与采用",
+      "sublabel": "正文与来源必须仍有效",
+      "pos": [
+        340,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/workbench.py",
+          "line": 80,
+          "end_line": 107
+        }
+      ]
+    },
+    {
+      "id": "approval",
+      "type": "backend",
+      "label": "方案审批与内部结果",
+      "sublabel": "审批不是客户已解决",
+      "pos": [
+        640,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/operations.py",
+          "line": 146,
+          "end_line": 204
+        }
+      ]
+    },
+    {
+      "id": "customer-result",
+      "type": "backend",
+      "label": "本轮客户结果",
+      "sublabel": "确认 / 待确认 / 未解决",
+      "pos": [
+        940,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/closure_plans.py",
+          "line": 8,
+          "end_line": 50
+        }
+      ]
+    },
+    {
+      "id": "sqlite",
+      "type": "database",
+      "label": "SQLite 事项与附件",
+      "sublabel": "记录 / 消息 / 附件字节",
+      "pos": [
+        40,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/workbench.py",
+          "line": 17,
+          "end_line": 47
+        }
+      ]
+    },
+    {
+      "id": "document",
+      "type": "backend",
+      "label": "知识材料导入",
+      "sublabel": "草稿 / 范围 / 新版本",
+      "pos": [
+        340,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 127,
+          "end_line": 162
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "type": "security",
+      "label": "审核与生效控制",
+      "sublabel": "复核当前版本再发布",
+      "pos": [
+        640,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 163,
+          "end_line": 190
+        },
+        {
+          "path": "backend/core/knowledge_policy.py",
+          "line": 8,
+          "end_line": 19
+        }
+      ]
+    },
+    {
+      "id": "reopen",
+      "type": "backend",
+      "label": "重开与新一轮跟进",
+      "sublabel": "保留历史、重置当前确认",
+      "pos": [
+        940,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 425,
+          "end_line": 437
+        },
+        {
+          "path": "backend/core/closure_plans.py",
+          "line": 12,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "source",
+      "type": "backend",
+      "label": "知识引用检查",
+      "sublabel": "用当前注册表复核片段",
+      "pos": [
+        340,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 582,
+          "end_line": 599
+        }
+      ]
+    },
+    {
+      "id": "vector",
+      "type": "database",
+      "label": "Chroma 分片索引",
+      "sublabel": "知识片段的检索存储",
+      "pos": [
+        640,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 49,
+          "end_line": 85
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "workbench--scope",
+      "from": "workbench",
+      "to": "scope",
+      "label": "提交办理",
+      "variant": "emphasis"
+    },
+    {
+      "id": "scope--handoff",
+      "from": "scope",
+      "to": "handoff",
+      "label": "范围通过",
+      "variant": "security"
+    },
+    {
+      "id": "handoff--todo",
+      "from": "handoff",
+      "to": "todo",
+      "label": "移交清单",
+      "variant": "default"
+    },
+    {
+      "id": "scope--adopt",
+      "from": "scope",
+      "to": "adopt",
+      "label": "版本通过",
+      "variant": "security"
+    },
+    {
+      "id": "adopt--approval",
+      "from": "adopt",
+      "to": "approval",
+      "label": "提出方案",
+      "variant": "default"
+    },
+    {
+      "id": "approval--customer-result",
+      "from": "approval",
+      "to": "customer-result",
+      "label": "完成内部工作",
+      "variant": "default"
+    },
+    {
+      "id": "customer-result--reopen",
+      "from": "customer-result",
+      "to": "reopen",
+      "label": "新投诉/复发",
+      "variant": "default"
+    },
+    {
+      "id": "reopen--todo",
+      "from": "reopen",
+      "to": "todo",
+      "label": "新轮次",
+      "variant": "default"
+    },
+    {
+      "id": "handoff--records",
+      "from": "handoff",
+      "to": "records",
+      "label": "保存",
+      "variant": "default"
+    },
+    {
+      "id": "adopt--records",
+      "from": "adopt",
+      "to": "records",
+      "label": "事务采用",
+      "variant": "default"
+    },
+    {
+      "id": "records--sqlite",
+      "from": "records",
+      "to": "sqlite",
+      "label": "持久化",
+      "variant": "default"
+    },
+    {
+      "id": "document--review",
+      "from": "document",
+      "to": "review",
+      "label": "提交审核",
+      "variant": "security"
+    },
+    {
+      "id": "review--vector",
+      "from": "review",
+      "to": "vector",
+      "label": "同步生效版本",
+      "variant": "security"
+    },
+    {
+      "id": "document--records",
+      "from": "document",
+      "to": "records",
+      "label": "保存元数据",
+      "variant": "default"
+    },
+    {
+      "id": "source--sqlite",
+      "from": "source",
+      "to": "sqlite",
+      "label": "复核注册表",
+      "variant": "default"
+    },
+    {
+      "id": "source--vector",
+      "from": "source",
+      "to": "vector",
+      "label": "读取片段",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "title": "状态与外部动作",
+      "items": [
+        "页面里的采用、审批与结案是本地业务记录。",
+        "没有对外发送、真实退款或写入电商订单的平台能力。"
+      ],
+      "dot": "amber"
+    },
+    {
+      "title": "数据职责",
+      "items": [
+        "SQLite 保留业务事实和附件；Chroma 提供语义索引。",
+        "本地范围校验和演练身份不能替代生产租户权限体系。"
+      ],
+      "dot": "slate"
+    }
+  ]
+}

@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "知应 · 答复分流、知识与领域协作",
+    "locale": "zh-CN",
+    "output": "zhiying-agent.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Andy021110/zhiying-service-workbench.git",
+      "revision": "8df26f74a5ffce673695cc3534db78362e570ddd"
+    },
+    "views": [
+      {
+        "id": "compound",
+        "label": "复合问题",
+        "focus": [
+          "customer",
+          "context",
+          "intent",
+          "retrieve",
+          "tool-manager",
+          "knowledge-registry",
+          "knowledge-store",
+          "router",
+          "technical",
+          "billing",
+          "llm",
+          "execution",
+          "draft"
+        ],
+        "note": "当前同时有技术与账单问题时分别执行；并不为每个领域复制整套全局答复。"
+      },
+      {
+        "id": "facts-only",
+        "label": "事实分流",
+        "focus": [
+          "customer",
+          "context",
+          "fact-query",
+          "draft",
+          "followup",
+          "database"
+        ],
+        "note": "纯订单事实不需要领域回复 Agent；事实查询不带来任何退款授权。"
+      },
+      {
+        "id": "missing",
+        "label": "知识不足",
+        "focus": [
+          "customer",
+          "context",
+          "intent",
+          "retrieve",
+          "knowledge-registry",
+          "gaps",
+          "followup",
+          "database"
+        ],
+        "note": "无适用依据时列缺口；不会用默认规则伪造完整政策答复。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "customer",
+      "type": "external",
+      "label": "客户原话与客服操作",
+      "sublabel": "输入类型分别保留",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 438,
+          "end_line": 457
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "type": "backend",
+      "label": "当前事项与历史",
+      "sublabel": "最新状态覆盖旧问题词",
+      "pos": [
+        340,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 455,
+          "end_line": 491
+        },
+        {
+          "path": "backend/core/conversation_context.py",
+          "line": 1,
+          "end_line": 40
+        }
+      ]
+    },
+    {
+      "id": "intent",
+      "type": "backend",
+      "label": "意图与实体识别",
+      "sublabel": "领域 / 紧急度 / 置信度",
+      "pos": [
+        640,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 508,
+          "end_line": 511
+        }
+      ]
+    },
+    {
+      "id": "retrieve",
+      "type": "backend",
+      "label": "检索和知识可用性",
+      "sublabel": "有效片段 / 模式 / 子问题",
+      "pos": [
+        940,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 509,
+          "end_line": 522
+        },
+        {
+          "path": "backend/api/main.py",
+          "line": 571,
+          "end_line": 599
+        }
+      ]
+    },
+    {
+      "id": "fact-query",
+      "type": "backend",
+      "label": "纯事实查询",
+      "sublabel": "明确订单问题直接返回",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 460,
+          "end_line": 484
+        }
+      ]
+    },
+    {
+      "id": "translate",
+      "type": "backend",
+      "label": "原文与草稿翻译",
+      "sublabel": "保留原文 / 缓存译文",
+      "pos": [
+        340,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 468,
+          "end_line": 476
+        },
+        {
+          "path": "backend/api/main.py",
+          "line": 492,
+          "end_line": 507
+        }
+      ]
+    },
+    {
+      "id": "tool-manager",
+      "type": "backend",
+      "label": "改写、缓存和搜索",
+      "sublabel": "调用 knowledge_search",
+      "pos": [
+        640,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 579,
+          "end_line": 599
+        },
+        {
+          "path": "backend/mcp/tool_manager.py",
+          "line": 1,
+          "end_line": 50
+        }
+      ]
+    },
+    {
+      "id": "knowledge-registry",
+      "type": "security",
+      "label": "来源与版本复核",
+      "sublabel": "排除归档、旧版与低分",
+      "pos": [
+        940,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 582,
+          "end_line": 598
+        },
+        {
+          "path": "backend/core/knowledge_policy.py",
+          "line": 1,
+          "end_line": 19
+        }
+      ]
+    },
+    {
+      "id": "draft",
+      "type": "frontend",
+      "label": "回复草稿与来源",
+      "sublabel": "人工核对后本地采用",
+      "pos": [
+        40,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/workbench.py",
+          "line": 80,
+          "end_line": 107
+        }
+      ]
+    },
+    {
+      "id": "gaps",
+      "type": "backend",
+      "label": "缺口与后续核对",
+      "sublabel": "无依据不进入领域生成",
+      "pos": [
+        340,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 512,
+          "end_line": 522
+        }
+      ]
+    },
+    {
+      "id": "router",
+      "type": "backend",
+      "label": "当前问题领域路由",
+      "sublabel": "主 Agent / 协作 Agent",
+      "pos": [
+        640,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 440,
+          "end_line": 473
+        },
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 533,
+          "end_line": 536
+        }
+      ]
+    },
+    {
+      "id": "knowledge-store",
+      "type": "database",
+      "label": "Chroma 知识片段",
+      "sublabel": "语义检索与来源元数据",
+      "pos": [
+        940,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 232,
+          "end_line": 260
+        }
+      ]
+    },
+    {
+      "id": "general",
+      "type": "backend",
+      "label": "通用客服 Agent",
+      "sublabel": "一般咨询与需要的兜底",
+      "pos": [
+        40,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 212,
+          "end_line": 217
+        }
+      ]
+    },
+    {
+      "id": "technical",
+      "type": "backend",
+      "label": "技术支持 Agent",
+      "sublabel": "故障当前有效时执行",
+      "pos": [
+        340,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 220,
+          "end_line": 225
+        }
+      ]
+    },
+    {
+      "id": "billing",
+      "type": "backend",
+      "label": "账单售后 Agent",
+      "sublabel": "资金与售后独立处理",
+      "pos": [
+        640,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 228,
+          "end_line": 240
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "type": "cloud",
+      "label": "模型请求与 Skill 注入",
+      "sublabel": "按本次领域约束生成",
+      "pos": [
+        940,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 171,
+          "end_line": 204
+        }
+      ]
+    },
+    {
+      "id": "execution",
+      "type": "backend",
+      "label": "执行状态与合并",
+      "sublabel": "分领域保留结果和失败",
+      "pos": [
+        40,
+        680
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/execution_calls.py",
+          "line": 8,
+          "end_line": 21
+        },
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 97,
+          "end_line": 110
+        }
+      ]
+    },
+    {
+      "id": "followup",
+      "type": "backend",
+      "label": "待办、交接与客户结果",
+      "sublabel": "草稿采用后仍有办理步骤",
+      "pos": [
+        340,
+        680
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/operations.py",
+          "line": 146,
+          "end_line": 225
+        },
+        {
+          "path": "backend/core/closure_plans.py",
+          "line": 8,
+          "end_line": 50
+        }
+      ]
+    },
+    {
+      "id": "database",
+      "type": "database",
+      "label": "SQLite 持久记录",
+      "sublabel": "消息 / 采用 / 执行元数据",
+      "pos": [
+        640,
+        680
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/workbench.py",
+          "line": 17,
+          "end_line": 47
+        },
+        {
+          "path": "backend/core/execution_calls.py",
+          "line": 8,
+          "end_line": 21
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "customer--context",
+      "from": "customer",
+      "to": "context",
+      "label": "保留输入",
+      "variant": "emphasis"
+    },
+    {
+      "id": "context--intent",
+      "from": "context",
+      "to": "intent",
+      "label": "非纯事实",
+      "variant": "default"
+    },
+    {
+      "id": "intent--retrieve",
+      "from": "intent",
+      "to": "retrieve",
+      "label": "检索依据",
+      "variant": "emphasis"
+    },
+    {
+      "id": "context--fact-query",
+      "from": "context",
+      "to": "fact-query",
+      "label": "仅事实",
+      "variant": "default"
+    },
+    {
+      "id": "context--translate",
+      "from": "context",
+      "to": "translate",
+      "label": "翻译请求",
+      "variant": "default"
+    },
+    {
+      "id": "retrieve--knowledge-registry",
+      "from": "retrieve",
+      "to": "knowledge-registry",
+      "label": "核对来源",
+      "variant": "security"
+    },
+    {
+      "id": "retrieve--tool-manager",
+      "from": "retrieve",
+      "to": "tool-manager",
+      "label": "查询",
+      "variant": "default"
+    },
+    {
+      "id": "tool-manager--knowledge-store",
+      "from": "tool-manager",
+      "to": "knowledge-store",
+      "label": "向量检索",
+      "variant": "default"
+    },
+    {
+      "id": "knowledge-registry--router",
+      "from": "knowledge-registry",
+      "to": "router",
+      "label": "依据适用",
+      "variant": "security"
+    },
+    {
+      "id": "knowledge-registry--gaps",
+      "from": "knowledge-registry",
+      "to": "gaps",
+      "label": "缺失或失效",
+      "variant": "default"
+    },
+    {
+      "id": "router--general",
+      "from": "router",
+      "to": "general",
+      "label": "一般领域",
+      "variant": "default"
+    },
+    {
+      "id": "router--technical",
+      "from": "router",
+      "to": "technical",
+      "label": "当前故障",
+      "variant": "default"
+    },
+    {
+      "id": "router--billing",
+      "from": "router",
+      "to": "billing",
+      "label": "资金问题",
+      "variant": "default"
+    },
+    {
+      "id": "general--llm",
+      "from": "general",
+      "to": "llm",
+      "label": "生成",
+      "variant": "default"
+    },
+    {
+      "id": "technical--llm",
+      "from": "technical",
+      "to": "llm",
+      "label": "生成",
+      "variant": "default"
+    },
+    {
+      "id": "billing--llm",
+      "from": "billing",
+      "to": "llm",
+      "label": "生成",
+      "variant": "default"
+    },
+    {
+      "id": "llm--execution",
+      "from": "llm",
+      "to": "execution",
+      "label": "领域结果",
+      "variant": "default"
+    },
+    {
+      "id": "execution--draft",
+      "from": "execution",
+      "to": "draft",
+      "label": "合并草稿",
+      "variant": "default"
+    },
+    {
+      "id": "fact-query--draft",
+      "from": "fact-query",
+      "to": "draft",
+      "label": "事实答案",
+      "variant": "default"
+    },
+    {
+      "id": "gaps--followup",
+      "from": "gaps",
+      "to": "followup",
+      "label": "补资料",
+      "variant": "default"
+    },
+    {
+      "id": "draft--followup",
+      "from": "draft",
+      "to": "followup",
+      "label": "客服办理",
+      "variant": "default"
+    },
+    {
+      "id": "followup--database",
+      "from": "followup",
+      "to": "database",
+      "label": "保存状态",
+      "variant": "default"
+    },
+    {
+      "id": "execution--database",
+      "from": "execution",
+      "to": "database",
+      "label": "执行记录",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "title": "条件分支",
+      "items": [
+        "恢复后的旧故障不应再次触发技术支持；复发后重新判断。",
+        "原文翻译和纯事实查询有单独入口，不强制经过政策检索。"
+      ],
+      "dot": "slate"
+    },
+    {
+      "title": "不是正确率保证",
+      "items": [
+        "完成、失败和降级记录说明流程状态。",
+        "AR02 / AR03 的历史内容反例继续保留，不能把执行完成当作答案正确。"
+      ],
+      "dot": "amber"
+    }
+  ]
+}

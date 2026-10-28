@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-28",
+  "renderer": "tt-a1i/archify 3.2",
+  "directly_visible": true,
+  "section_url": "http://47.76.25.13/portfolio/zhiying.html#interactive-architecture",
+  "diagrams": [
+    {
+      "name": "zhiying-system",
+      "nodes": 20,
+      "connections": 22,
+      "source_revision": "8df26f74a5ffce673695cc3534db78362e570ddd",
+      "gates": {
+        "validate": "pass",
+        "deliver": "pass",
+        "check": "pass",
+        "browser-check": "pass"
+      },
+      "html_sha256": "c53034cd563e278d395c89ce63bfb4c97510f24ca2bd09b10e8905f017bda80a",
+      "url": "http://47.76.25.13/portfolio/architecture/zhiying-system.html"
+    },
+    {
+      "name": "zhiying-agent",
+      "nodes": 19,
+      "connections": 23,
+      "source_revision": "8df26f74a5ffce673695cc3534db78362e570ddd",
+      "gates": {
+        "validate": "pass",
+        "deliver": "pass",
+        "check": "pass",
+        "browser-check": "pass"
+      },
+      "html_sha256": "7fe3bedeebd42599eb82bae11f96049b591221accaee9c3815c33ef38d21908e",
+      "url": "http://47.76.25.13/portfolio/architecture/zhiying-agent.html"
+    },
+    {
+      "name": "zhiying-business",
+      "nodes": 14,
+      "connections": 16,
+      "source_revision": "8df26f74a5ffce673695cc3534db78362e570ddd",
+      "gates": {
+        "validate": "pass",
+        "deliver": "pass",
+        "check": "pass",
+        "browser-check": "pass"
+      },
+      "html_sha256": "1270f07fc718a1b96918061f71abf14ff976ea092455d7758577de276f08000a",
+      "url": "http://47.76.25.13/portfolio/architecture/zhiying-business.html"
+    }
+  ],
+  "scope": "架构讲解；未修改产品执行逻辑；未新增模型调用",
+  "browser_review": "实际浏览器已检查机制切换、默认可读性、节点查找与固定源码；线上页面另行复验"
+}

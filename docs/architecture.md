@@ -1,6 +1,6 @@
 # 架构与关键边界
 
-[可交互架构图：切换场景、点选模块并查看对应实现](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)
+[可交互架构图：完整总览、机制切换与固定源码](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)
 
 ## 请求怎样走过系统
 
@@ -48,3 +48,10 @@
 
 
 [Archify 完整交互架构](http://47.76.25.13/portfolio/architecture/zhiying-archify.html)：节点来源固定到已检查 Git 提交，可追踪关系并下载离线 HTML；这是一张架构快照。
+
+
+## 完整交互架构与分层阅读
+
+[作品集内直接查看](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)，无需展开。当前提供 系统总览、Agent 与知识、工单与知识治理 三张图。它们依据固定提交里的真实调用、校验和持久化职责编制；一个逻辑组件不等于一个独立进程或微服务。旧版只展示答复或查询主路径，现已扩展为完整系统和关键机制图。
+
+新版工作台从 SQLite 事项和消息构建上下文；Redis 工作记忆、Chroma 情景记忆与画像是兼容 CLI 的独立链路。图中不把兼容链路虚构为工作台每次请求的必经步骤。内部知识工具模块也不等于已经接入外部 MCP 平台。

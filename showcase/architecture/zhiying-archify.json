@@ -2,47 +2,83 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "知应 · 客服答复准备架构",
+    "title": "知应 · 完整系统与运行职责",
     "locale": "zh-CN",
-    "output": "zhiying-archify.html",
+    "output": "zhiying-system.html",
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/Andy021110/zhiying-service-workbench.git",
-      "revision": "3163b7ffb67143d73e0fa93801c95720c1ae8dbf"
+      "revision": "8df26f74a5ffce673695cc3534db78362e570ddd"
     },
     "views": [
       {
-        "id": "prepare-reply",
-        "label": "准备政策答复",
+        "id": "reply-path",
+        "label": "回复主链",
         "focus": [
-          "workbench-ui",
-          "business-service",
-          "knowledge-gate",
-          "knowledge-store",
-          "draft-agent",
-          "generation-provider"
+          "workbench",
+          "api",
+          "reply",
+          "knowledge",
+          "tools",
+          "chroma-kb",
+          "governance",
+          "orchestrator",
+          "provider",
+          "skills",
+          "calls",
+          "store",
+          "sqlite"
         ],
-        "note": "只在依据适用时生成；返回后由客服核对，采用不等于发送。"
+        "note": "新版工作台从 SQLite 构建上下文；有可用依据才进入领域答复。"
       },
       {
-        "id": "verify-facts",
-        "label": "核对订单事实",
+        "id": "case-flow",
+        "label": "工单与状态",
         "focus": [
-          "workbench-ui",
-          "business-service",
-          "order-facts",
-          "business-records"
+          "workbench",
+          "api",
+          "operations",
+          "store",
+          "sqlite",
+          "calls"
         ],
-        "note": "订单资料由入口按会话读取后交给确定性核对，不执行订单变更。"
+        "note": "采用、审批、内部完成和客户确认是不同操作，不代表真实退款或对外发送。"
+      },
+      {
+        "id": "knowledge-path",
+        "label": "知识与工具",
+        "focus": [
+          "api",
+          "governance",
+          "store",
+          "sqlite",
+          "knowledge",
+          "tools",
+          "chroma-kb"
+        ],
+        "note": "知识工具是内部管理模块，不据此声明已部署外部 MCP 平台。"
+      },
+      {
+        "id": "legacy-memory",
+        "label": "CLI 与记忆",
+        "focus": [
+          "cli",
+          "memory",
+          "redis",
+          "chroma-memory",
+          "orchestrator",
+          "provider"
+        ],
+        "note": "Redis 三级记忆在兼容 CLI 链路使用，不把它画成新版工作台每次请求的必经环节。"
       }
     ]
   },
   "components": [
     {
-      "id": "workbench-ui",
+      "id": "workbench",
       "type": "frontend",
-      "label": "客服工作台",
-      "sublabel": "客户原话、操作与草稿",
+      "label": "服务工作台",
+      "sublabel": "会话 / 工单 / 待办 / 知识",
       "pos": [
         40,
         40
@@ -53,19 +89,19 @@
       ],
       "sources": [
         {
-          "path": "frontend/src/lib/backends.js",
-          "line": 62,
-          "end_line": 70
+          "path": "frontend/src/App.vue",
+          "line": 231,
+          "end_line": 255
         }
       ]
     },
     {
-      "id": "business-service",
+      "id": "api",
       "type": "backend",
-      "label": "会话与业务服务",
-      "sublabel": "FastAPI / WorkbenchStore",
+      "label": "FastAPI 业务接口",
+      "sublabel": "按事项和操作分流",
       "pos": [
-        400,
+        340,
         40
       ],
       "size": [
@@ -75,29 +111,202 @@
       "sources": [
         {
           "path": "backend/api/main.py",
-          "line": 438,
-          "end_line": 463
-        },
+          "line": 410,
+          "end_line": 461
+        }
+      ]
+    },
+    {
+      "id": "reply",
+      "type": "backend",
+      "label": "回复准备与上下文",
+      "sublabel": "SQLite 历史 / 当前问题",
+      "pos": [
+        640,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
         {
           "path": "backend/api/main.py",
-          "line": 482,
-          "end_line": 522
+          "line": 455,
+          "end_line": 546
+        }
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "type": "backend",
+      "label": "多 Agent 编排",
+      "sublabel": "领域选择 / 协作 / 降级",
+      "pos": [
+        940,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 430,
+          "end_line": 473
+        }
+      ]
+    },
+    {
+      "id": "monitor",
+      "type": "backend",
+      "label": "运行监控与评测",
+      "sublabel": "拉取统计 / 异常与建议",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 178,
+          "end_line": 195
         },
+        {
+          "path": "backend/monitor/performance_monitor.py",
+          "line": 183,
+          "end_line": 220
+        }
+      ]
+    },
+    {
+      "id": "operations",
+      "type": "backend",
+      "label": "工单与后续办理",
+      "sublabel": "交接 / 审批 / 客户结果",
+      "pos": [
+        340,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/operations.py",
+          "line": 146,
+          "end_line": 225
+        },
+        {
+          "path": "backend/core/closure_plans.py",
+          "line": 8,
+          "end_line": 50
+        }
+      ]
+    },
+    {
+      "id": "facts",
+      "type": "backend",
+      "label": "事实与翻译分流",
+      "sublabel": "只读查询 / 原文和草稿译文",
+      "pos": [
+        640,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 460,
+          "end_line": 507
+        }
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "cloud",
+      "label": "生成模型服务",
+      "sublabel": "兼容 Messages 接口",
+      "pos": [
+        940,
+        200
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 171,
+          "end_line": 192
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "backend",
+      "label": "知识工具管理",
+      "sublabel": "改写 / 缓存 / 熔断 / 重试",
+      "pos": [
+        40,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 138,
+          "end_line": 175
+        },
+        {
+          "path": "backend/mcp/tool_manager.py",
+          "line": 1,
+          "end_line": 50
+        }
+      ]
+    },
+    {
+      "id": "store",
+      "type": "backend",
+      "label": "WorkbenchStore",
+      "sublabel": "记录 / 消息 / 版本事务",
+      "pos": [
+        340,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
         {
           "path": "backend/core/workbench.py",
           "line": 17,
-          "end_line": 46
+          "end_line": 100
         }
       ]
     },
     {
-      "id": "knowledge-gate",
-      "type": "security",
-      "label": "知识检索与适用校验",
-      "sublabel": "版本、审核与业务范围",
+      "id": "sqlite",
+      "type": "database",
+      "label": "SQLite 业务数据库",
+      "sublabel": "事项 / 附件 / 审批 / 来源",
       "pos": [
-        760,
-        40
+        640,
+        360
       ],
       "size": [
         180,
@@ -105,30 +314,93 @@
       ],
       "sources": [
         {
-          "path": "backend/api/main.py",
-          "line": 508,
-          "end_line": 522
+          "path": "backend/core/workbench.py",
+          "line": 17,
+          "end_line": 47
+        }
+      ]
+    },
+    {
+      "id": "skills",
+      "type": "backend",
+      "label": "动态业务 Skills",
+      "sublabel": "按领域匹配并注入提示",
+      "pos": [
+        940,
+        360
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/skill_loader.py",
+          "line": 92,
+          "end_line": 132
         },
         {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 194,
+          "end_line": 204
+        }
+      ]
+    },
+    {
+      "id": "calls",
+      "type": "backend",
+      "label": "助手执行持久记录",
+      "sublabel": "完成 / 失败 / 降级 / 中断",
+      "pos": [
+        40,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/execution_calls.py",
+          "line": 6,
+          "end_line": 36
+        }
+      ]
+    },
+    {
+      "id": "governance",
+      "type": "security",
+      "label": "知识治理与生效",
+      "sublabel": "版本 / 审核 / 模式检查",
+      "pos": [
+        340,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
           "path": "backend/core/knowledge_policy.py",
-          "line": 8,
+          "line": 1,
           "end_line": 19
         },
         {
           "path": "backend/mcp/knowledge_base.py",
-          "line": 51,
-          "end_line": 80
+          "line": 127,
+          "end_line": 190
         }
       ]
     },
     {
-      "id": "knowledge-store",
-      "type": "database",
-      "label": "知识向量集合",
-      "sublabel": "ChromaDB / 可嵌入运行",
+      "id": "knowledge",
+      "type": "backend",
+      "label": "知识库与分片检索",
+      "sublabel": "复核引用的当前有效版本",
       "pos": [
-        1120,
-        40
+        640,
+        520
       ],
       "size": [
         180,
@@ -137,24 +409,45 @@
       "sources": [
         {
           "path": "backend/mcp/knowledge_base.py",
-          "line": 51,
-          "end_line": 80
+          "line": 127,
+          "end_line": 190
         },
         {
           "path": "backend/mcp/knowledge_base.py",
-          "line": 273,
-          "end_line": 285
+          "line": 232,
+          "end_line": 260
         }
       ]
     },
     {
-      "id": "order-facts",
-      "type": "backend",
-      "label": "确定性事实核对",
-      "sublabel": "仅订单事实；不调用模型",
+      "id": "chroma-kb",
+      "type": "database",
+      "label": "Chroma 知识集合",
+      "sublabel": "向量片段 / 可配 Embedding",
+      "pos": [
+        940,
+        520
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 49,
+          "end_line": 85
+        }
+      ]
+    },
+    {
+      "id": "cli",
+      "type": "external",
+      "label": "兼容 CLI 入口",
+      "sublabel": "独立于新版工作台主链",
       "pos": [
         40,
-        280
+        680
       ],
       "size": [
         180,
@@ -162,25 +455,20 @@
       ],
       "sources": [
         {
-          "path": "backend/core/fact_answers.py",
-          "line": 15,
-          "end_line": 33
-        },
-        {
           "path": "backend/api/main.py",
-          "line": 458,
-          "end_line": 484
+          "line": 858,
+          "end_line": 909
         }
       ]
     },
     {
-      "id": "draft-agent",
+      "id": "memory",
       "type": "backend",
-      "label": "领域 Agent 编排",
-      "sublabel": "生成供客服核对的草稿",
+      "label": "三级会话记忆",
+      "sublabel": "最近消息 / 摘要 / 画像",
       "pos": [
-        760,
-        280
+        340,
+        680
       ],
       "size": [
         180,
@@ -188,46 +476,25 @@
       ],
       "sources": [
         {
-          "path": "backend/api/main.py",
-          "line": 523,
-          "end_line": 546
+          "path": "backend/memory/conversation_memory.py",
+          "line": 130,
+          "end_line": 159
         },
         {
-          "path": "backend/agents/agent_orchestrator.py",
-          "line": 171,
-          "end_line": 192
+          "path": "backend/memory/conversation_memory.py",
+          "line": 212,
+          "end_line": 241
         }
       ]
     },
     {
-      "id": "generation-provider",
-      "type": "cloud",
-      "label": "配置的生成模型",
-      "sublabel": "外部接口；无订单写权限",
-      "pos": [
-        1120,
-        280
-      ],
-      "size": [
-        180,
-        76
-      ],
-      "sources": [
-        {
-          "path": "backend/agents/agent_orchestrator.py",
-          "line": 171,
-          "end_line": 192
-        }
-      ]
-    },
-    {
-      "id": "business-records",
+      "id": "redis",
       "type": "database",
-      "label": "SQLite 业务记录",
-      "sublabel": "消息、工单、版本与材料",
+      "label": "Redis 工作记忆",
+      "sublabel": "最近消息与压缩摘要",
       "pos": [
-        400,
-        500
+        640,
+        680
       ],
       "size": [
         180,
@@ -235,93 +502,224 @@
       ],
       "sources": [
         {
-          "path": "backend/core/workbench.py",
-          "line": 17,
-          "end_line": 46
+          "path": "backend/memory/conversation_memory.py",
+          "line": 145,
+          "end_line": 159
         },
         {
-          "path": "backend/api/main.py",
-          "line": 445,
-          "end_line": 457
+          "path": "backend/memory/conversation_memory.py",
+          "line": 293,
+          "end_line": 305
+        }
+      ]
+    },
+    {
+      "id": "chroma-memory",
+      "type": "database",
+      "label": "Chroma 记忆集合",
+      "sublabel": "情景记忆 / 用户画像",
+      "pos": [
+        940,
+        680
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/memory/conversation_memory.py",
+          "line": 123,
+          "end_line": 126
+        },
+        {
+          "path": "backend/memory/conversation_memory.py",
+          "line": 307,
+          "end_line": 353
         }
       ]
     }
   ],
   "connections": [
     {
-      "id": "ui-submit",
-      "from": "workbench-ui",
-      "to": "business-service",
-      "label": "提交操作",
+      "id": "workbench--api",
+      "from": "workbench",
+      "to": "api",
+      "label": "业务操作",
       "variant": "emphasis"
     },
     {
-      "id": "retrieve-policy",
-      "from": "business-service",
-      "to": "knowledge-gate",
-      "label": "准备答复",
-      "variant": "security"
-    },
-    {
-      "id": "knowledge-query",
-      "from": "knowledge-gate",
-      "to": "knowledge-store",
-      "label": "检索片段",
-      "variant": "default"
-    },
-    {
-      "id": "qualified-generation",
-      "from": "knowledge-gate",
-      "to": "draft-agent",
-      "label": "依据有效",
-      "variant": "security"
-    },
-    {
-      "id": "model-request",
-      "from": "draft-agent",
-      "to": "generation-provider",
-      "label": "生成请求",
+      "id": "api--reply",
+      "from": "api",
+      "to": "reply",
+      "label": "回复请求",
       "variant": "emphasis"
     },
     {
-      "id": "read-only-facts",
-      "from": "business-service",
-      "to": "order-facts",
-      "label": "仅事实问题",
+      "id": "reply--orchestrator",
+      "from": "reply",
+      "to": "orchestrator",
+      "label": "依据可用",
+      "variant": "security"
+    },
+    {
+      "id": "orchestrator--provider",
+      "from": "orchestrator",
+      "to": "provider",
+      "label": "生成",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api--operations",
+      "from": "api",
+      "to": "operations",
+      "label": "办理",
       "variant": "default"
     },
     {
-      "id": "persist-records",
-      "from": "business-service",
-      "to": "business-records",
-      "label": "记录与恢复",
+      "id": "operations--store",
+      "from": "operations",
+      "to": "store",
+      "label": "校验后写入",
+      "variant": "security"
+    },
+    {
+      "id": "store--sqlite",
+      "from": "store",
+      "to": "sqlite",
+      "label": "事务读写",
+      "variant": "default"
+    },
+    {
+      "id": "reply--facts",
+      "from": "reply",
+      "to": "facts",
+      "label": "事实或翻译",
+      "variant": "default"
+    },
+    {
+      "id": "reply--tools",
+      "from": "reply",
+      "to": "tools",
+      "label": "需要检索",
+      "variant": "default"
+    },
+    {
+      "id": "tools--knowledge",
+      "from": "tools",
+      "to": "knowledge",
+      "label": "检索回调",
+      "variant": "default"
+    },
+    {
+      "id": "knowledge--chroma-kb",
+      "from": "knowledge",
+      "to": "chroma-kb",
+      "label": "向量查询",
+      "variant": "default"
+    },
+    {
+      "id": "governance--knowledge",
+      "from": "governance",
+      "to": "knowledge",
+      "label": "审核与版本",
+      "variant": "security"
+    },
+    {
+      "id": "governance--store",
+      "from": "governance",
+      "to": "store",
+      "label": "知识元数据",
+      "variant": "default"
+    },
+    {
+      "id": "orchestrator--skills",
+      "from": "orchestrator",
+      "to": "skills",
+      "label": "匹配规则",
+      "variant": "default"
+    },
+    {
+      "id": "calls--orchestrator",
+      "from": "calls",
+      "to": "orchestrator",
+      "label": "包装执行",
+      "variant": "default"
+    },
+    {
+      "id": "calls--store",
+      "from": "calls",
+      "to": "store",
+      "label": "写入状态",
+      "variant": "default"
+    },
+    {
+      "id": "monitor--orchestrator",
+      "from": "monitor",
+      "to": "orchestrator",
+      "label": "执行统计",
+      "variant": "default"
+    },
+    {
+      "id": "monitor--tools",
+      "from": "monitor",
+      "to": "tools",
+      "label": "工具统计",
+      "variant": "default"
+    },
+    {
+      "id": "cli--memory",
+      "from": "cli",
+      "to": "memory",
+      "label": "读取并保存",
+      "variant": "default"
+    },
+    {
+      "id": "cli--orchestrator",
+      "from": "cli",
+      "to": "orchestrator",
+      "label": "独立入口",
+      "variant": "default"
+    },
+    {
+      "id": "memory--redis",
+      "from": "memory",
+      "to": "redis",
+      "label": "消息与摘要",
+      "variant": "default"
+    },
+    {
+      "id": "memory--chroma-memory",
+      "from": "memory",
+      "to": "chroma-memory",
+      "label": "历史与画像",
       "variant": "default"
     }
   ],
   "cards": [
     {
-      "dot": "emerald",
-      "title": "范围与入口",
+      "title": "覆盖范围",
       "items": [
-        "聚焦客服答复准备，不是所有功能的完整部署图。",
-        "客服输入、内部操作、草稿与客户结果分别记录。"
-      ]
+        "展示工作台、业务办理、知识、Agent、观测与独立 CLI 记忆。",
+        "知识集合和记忆集合是 Chroma 的不同逻辑集合，不是新增的微服务。"
+      ],
+      "dot": "slate"
     },
     {
-      "dot": "amber",
-      "title": "失败与审核边界",
+      "title": "业务边界",
       "items": [
-        "知识无匹配或不可用时列出缺口，不冒充政策答复。",
-        "草稿核对、采用与审批是本地流程，未接入对外发送或退款。"
-      ]
+        "历史订单只读；本地采用、审批与结案不执行真实退款或渠道发送。",
+        "本地用户范围校验不是企业统一认证。"
+      ],
+      "dot": "amber"
     },
     {
-      "dot": "slate",
-      "title": "证据与省略项",
+      "title": "如何阅读",
       "items": [
-        "节点引用固定 Git 提交中的实际实现。",
-        "未展开翻译、Redis 历史工作记忆与监控等次级链路。"
-      ]
+        "先看全部结构，再选引导视角；点击节点查看固定提交中的来源。",
+        "图是实现说明，动效不发起模型或数据库调用。"
+      ],
+      "dot": "slate"
     }
   ]
 }

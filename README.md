@@ -246,7 +246,6 @@ NOTICE.md          原工程、AI 协作与许可说明
 
 ### 可交互架构导览
 
-[打开作品集交互架构图](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)：支持 4 个业务场景切换、模块输入输出与源码查看、逐步讲解和自动播放。图为只读架构说明，不发起模型请求；历史实跑与异常分支分别标注依据，不能将路径播放当作新的调用记录。网页源码位于 `showcase/assets/architecture/`。
+[直接查看 Archify 架构图](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)。与作品集前两个项目使用相同的交互阅读器，进入架构区即显示，无需展开。提供 **系统总览、Agent 与知识、工单与知识治理** 三张图，按已提交代码分别展开完整结构、条件分支和存储职责。可缩放、查找节点、追踪有向关系、查看固定提交的源码和导出图片；播放动效不产生模型调用。
 
-
-[Archify 完整交互架构图](http://47.76.25.13/portfolio/architecture/zhiying-archify.html) · [作品集内展开](http://47.76.25.13/portfolio/zhiying.html#archify-architecture)。提供源码版本、节点说明与路径探索，离线 HTML 和可编辑 JSON 随仓库发布。
+HTML 与可编辑 spec 位于 `showcase/architecture/`；页面嵌入逻辑位于 `showcase/assets/portfolio-architecture-v2.js`。[架构发布核对](docs/evidence/architecture-complete.json)记录源码快照和生成检查。原有 Mermaid 总览继续保留。
