@@ -1,0 +1,28 @@
+{
+  "shuce": {
+    "status": "pass",
+    "gates": {
+      "validate": "pass",
+      "deliver": "pass",
+      "check": "pass",
+      "browser-check": "pass"
+    },
+    "artifact_sha256": "79aec172252e570f0b3f87bb72b9047081d05ca14871af9e5f2324b204cc8f3d",
+    "source_revision": "9bac2e499bc317f73ea6a655894f4033a48cb519",
+    "generator": "tt-a1i/archify 3.2",
+    "url": "http://47.76.25.13/portfolio/architecture/shuce-archify.html"
+  },
+  "zhiying": {
+    "status": "pass",
+    "gates": {
+      "validate": "pass",
+      "deliver": "pass",
+      "check": "pass",
+      "browser-check": "pass"
+    },
+    "artifact_sha256": "6d8acee56f8075f23fe71185b5e9643d84779e7920dc41f4d20ee752af30a0de",
+    "source_revision": "3163b7ffb67143d73e0fa93801c95720c1ae8dbf",
+    "generator": "tt-a1i/archify 3.2",
+    "url": "http://47.76.25.13/portfolio/architecture/zhiying-archify.html"
+  }
+}

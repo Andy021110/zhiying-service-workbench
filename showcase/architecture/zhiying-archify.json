@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "知应 · 客服答复准备架构",
+    "locale": "zh-CN",
+    "output": "zhiying-archify.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Andy021110/zhiying-service-workbench.git",
+      "revision": "3163b7ffb67143d73e0fa93801c95720c1ae8dbf"
+    },
+    "views": [
+      {
+        "id": "prepare-reply",
+        "label": "准备政策答复",
+        "focus": [
+          "workbench-ui",
+          "business-service",
+          "knowledge-gate",
+          "knowledge-store",
+          "draft-agent",
+          "generation-provider"
+        ],
+        "note": "只在依据适用时生成；返回后由客服核对，采用不等于发送。"
+      },
+      {
+        "id": "verify-facts",
+        "label": "核对订单事实",
+        "focus": [
+          "workbench-ui",
+          "business-service",
+          "order-facts",
+          "business-records"
+        ],
+        "note": "订单资料由入口按会话读取后交给确定性核对，不执行订单变更。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "workbench-ui",
+      "type": "frontend",
+      "label": "客服工作台",
+      "sublabel": "客户原话、操作与草稿",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "frontend/src/lib/backends.js",
+          "line": 62,
+          "end_line": 70
+        }
+      ]
+    },
+    {
+      "id": "business-service",
+      "type": "backend",
+      "label": "会话与业务服务",
+      "sublabel": "FastAPI / WorkbenchStore",
+      "pos": [
+        400,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 438,
+          "end_line": 463
+        },
+        {
+          "path": "backend/api/main.py",
+          "line": 482,
+          "end_line": 522
+        },
+        {
+          "path": "backend/core/workbench.py",
+          "line": 17,
+          "end_line": 46
+        }
+      ]
+    },
+    {
+      "id": "knowledge-gate",
+      "type": "security",
+      "label": "知识检索与适用校验",
+      "sublabel": "版本、审核与业务范围",
+      "pos": [
+        760,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 508,
+          "end_line": 522
+        },
+        {
+          "path": "backend/core/knowledge_policy.py",
+          "line": 8,
+          "end_line": 19
+        },
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 51,
+          "end_line": 80
+        }
+      ]
+    },
+    {
+      "id": "knowledge-store",
+      "type": "database",
+      "label": "知识向量集合",
+      "sublabel": "ChromaDB / 可嵌入运行",
+      "pos": [
+        1120,
+        40
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 51,
+          "end_line": 80
+        },
+        {
+          "path": "backend/mcp/knowledge_base.py",
+          "line": 273,
+          "end_line": 285
+        }
+      ]
+    },
+    {
+      "id": "order-facts",
+      "type": "backend",
+      "label": "确定性事实核对",
+      "sublabel": "仅订单事实；不调用模型",
+      "pos": [
+        40,
+        280
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/fact_answers.py",
+          "line": 15,
+          "end_line": 33
+        },
+        {
+          "path": "backend/api/main.py",
+          "line": 458,
+          "end_line": 484
+        }
+      ]
+    },
+    {
+      "id": "draft-agent",
+      "type": "backend",
+      "label": "领域 Agent 编排",
+      "sublabel": "生成供客服核对的草稿",
+      "pos": [
+        760,
+        280
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/api/main.py",
+          "line": 523,
+          "end_line": 546
+        },
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 171,
+          "end_line": 192
+        }
+      ]
+    },
+    {
+      "id": "generation-provider",
+      "type": "cloud",
+      "label": "配置的生成模型",
+      "sublabel": "外部接口；无订单写权限",
+      "pos": [
+        1120,
+        280
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/agents/agent_orchestrator.py",
+          "line": 171,
+          "end_line": 192
+        }
+      ]
+    },
+    {
+      "id": "business-records",
+      "type": "database",
+      "label": "SQLite 业务记录",
+      "sublabel": "消息、工单、版本与材料",
+      "pos": [
+        400,
+        500
+      ],
+      "size": [
+        180,
+        76
+      ],
+      "sources": [
+        {
+          "path": "backend/core/workbench.py",
+          "line": 17,
+          "end_line": 46
+        },
+        {
+          "path": "backend/api/main.py",
+          "line": 445,
+          "end_line": 457
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "ui-submit",
+      "from": "workbench-ui",
+      "to": "business-service",
+      "label": "提交操作",
+      "variant": "emphasis"
+    },
+    {
+      "id": "retrieve-policy",
+      "from": "business-service",
+      "to": "knowledge-gate",
+      "label": "准备答复",
+      "variant": "security"
+    },
+    {
+      "id": "knowledge-query",
+      "from": "knowledge-gate",
+      "to": "knowledge-store",
+      "label": "检索片段",
+      "variant": "default"
+    },
+    {
+      "id": "qualified-generation",
+      "from": "knowledge-gate",
+      "to": "draft-agent",
+      "label": "依据有效",
+      "variant": "security"
+    },
+    {
+      "id": "model-request",
+      "from": "draft-agent",
+      "to": "generation-provider",
+      "label": "生成请求",
+      "variant": "emphasis"
+    },
+    {
+      "id": "read-only-facts",
+      "from": "business-service",
+      "to": "order-facts",
+      "label": "仅事实问题",
+      "variant": "default"
+    },
+    {
+      "id": "persist-records",
+      "from": "business-service",
+      "to": "business-records",
+      "label": "记录与恢复",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "范围与入口",
+      "items": [
+        "聚焦客服答复准备，不是所有功能的完整部署图。",
+        "客服输入、内部操作、草稿与客户结果分别记录。"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "失败与审核边界",
+      "items": [
+        "知识无匹配或不可用时列出缺口，不冒充政策答复。",
+        "草稿核对、采用与审批是本地流程，未接入对外发送或退款。"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "证据与省略项",
+      "items": [
+        "节点引用固定 Git 提交中的实际实现。",
+        "未展开翻译、Redis 历史工作记忆与监控等次级链路。"
+      ]
+    }
+  ]
+}

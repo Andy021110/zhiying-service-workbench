@@ -247,3 +247,6 @@ NOTICE.md          原工程、AI 协作与许可说明
 ### 可交互架构导览
 
 [打开作品集交互架构图](http://47.76.25.13/portfolio/zhiying.html#interactive-architecture)：支持 4 个业务场景切换、模块输入输出与源码查看、逐步讲解和自动播放。图为只读架构说明，不发起模型请求；历史实跑与异常分支分别标注依据，不能将路径播放当作新的调用记录。网页源码位于 `showcase/assets/architecture/`。
+
+
+[Archify 完整交互架构图](http://47.76.25.13/portfolio/architecture/zhiying-archify.html) · [作品集内展开](http://47.76.25.13/portfolio/zhiying.html#archify-architecture)。提供源码版本、节点说明与路径探索，离线 HTML 和可编辑 JSON 随仓库发布。
